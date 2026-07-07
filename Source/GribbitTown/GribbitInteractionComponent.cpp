@@ -31,9 +31,9 @@ void UGribbitInteractionComponent::UpdateFocus()
 	FRotator ViewRot;
 	Char->GetActorEyesViewPoint(Start, ViewRot);
 	// Use camera location if available for accuracy.
-	if (Char->FollowCamera)
+	if (UCameraComponent* Camera = Char->GetFollowCamera())
 	{
-		Start = Char->FollowCamera->GetComponentLocation();
+		Start = Camera->GetComponentLocation();
 	}
 
 	const FVector End = Start + ViewRot.Vector() * TraceDistance;

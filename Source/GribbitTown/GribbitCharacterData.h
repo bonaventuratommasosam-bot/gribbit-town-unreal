@@ -41,4 +41,8 @@ struct GRIBBITTOWN_API FGribbitCharacterRow : public FTableRowBase
 	float StartFun = 70.f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Needs")
 	float StartSocial = 60.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Needs")
+	float StartHygiene = 75.f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Needs")
+	float StartBladder = 85.f;
 };

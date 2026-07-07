@@ -20,6 +20,8 @@ class GRIBBITTOWN_API AGribbitPlayerController : public APlayerController
 	GENERATED_BODY()
 
 public:
+	AGribbitPlayerController();
+
 	// Widget Blueprint class for the needs HUD (set in editor, or via C++ default).
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="UI")
 	TSubclassOf<UGribbitNeedsWidget> NeedsWidgetClass;

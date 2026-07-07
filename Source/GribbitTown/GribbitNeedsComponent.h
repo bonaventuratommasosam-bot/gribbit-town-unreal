@@ -82,7 +82,7 @@ public:
 	FOnNeedCriticalSignature OnNeedCritical;
 
 private:
-	void DecayNeed(float& Need, float Rate, float DeltaTime);
+	void DecayNeed(FName NeedName, float& Need, float Rate, float DeltaTime);
 	TMap<FName, float*> NeedMap;
 	void RebuildNeedMap();
 };

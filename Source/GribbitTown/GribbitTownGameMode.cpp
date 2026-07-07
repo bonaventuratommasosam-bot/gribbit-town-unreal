@@ -6,11 +6,18 @@
 #include "Engine/DataTable.h"
 #include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
+#include "UObject/ConstructorHelpers.h"
 
 AGribbitTownGameMode::AGribbitTownGameMode()
 {
+	static ConstructorHelpers::FClassFinder<AGribbitCharacter> ChillPeteBP(TEXT("/Game/Characters/BP_ChillPete"));
+	if (ChillPeteBP.Succeeded())
+	{
+		DefaultFrogClass = ChillPeteBP.Class;
+	}
+
 	// Multiplayer-ready default classes (Feature 5).
-	DefaultPawnClass = AGribbitCharacter::StaticClass();
+	DefaultPawnClass = DefaultFrogClass ? DefaultFrogClass.Get() : AGribbitCharacter::StaticClass();
 	PlayerControllerClass = AGribbitPlayerController::StaticClass();
 	PlayerStateClass = AGribbitPlayerState::StaticClass();
 

@@ -4,6 +4,8 @@
 #include "GameFramework/PlayerState.h"
 #include "GribbitPlayerState.generated.h"
 
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterPresetChangedSignature);
+
 /**
  * AGribbitPlayerState
  *
@@ -48,6 +50,4 @@ protected:
 	// Blueprint hook when the preset changes (swap mesh/outfit).
 	UPROPERTY(BlueprintAssignable, Category="Gribbit")
 	FOnCharacterPresetChangedSignature OnCharacterPresetChanged;
-
-	DECLARE_DYNAMIC_MULTICAST_DELEGATE(FOnCharacterPresetChangedSignature);
 };

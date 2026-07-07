@@ -5,15 +5,14 @@
 #include "GribbitNeedsWidget.generated.h"
 
 class UGribbitNeedsComponent;
+class UProgressBar;
 
 /**
  * UGribbitNeedsWidget
  *
- * C++ base for the needs HUD (Feature 2). The Blueprint child
- * (WBP_NeedsBars) adds the actual progress bars; this base binds to the
- * local player's needs component and ticks the values every frame.
- *
- * Override BindNeeds() in Blueprint to wire your UProgressBar widgets.
+ * C++ base for the needs HUD (Feature 2). Builds a small native HUD with
+ * six progress bars, so the generated WBP_NeedsBars works without designer
+ * wiring.
  */
 UCLASS(Abstract, Blueprintable)
 class GRIBBITTOWN_API UGribbitNeedsWidget : public UUserWidget
@@ -29,10 +28,34 @@ public:
 	UFUNCTION(BlueprintImplementableEvent, Category="Needs")
 	void OnNeedsUpdated(float Hunger, float Energy, float Fun, float Social, float Hygiene, float Bladder);
 
+	virtual void NativeConstruct() override;
 	virtual void NativeTick(const FGeometry& MyGeometry, float InDeltaTime) override;
 
 protected:
 	// Resolves the local player's needs component. Returns true if bound.
 	UFUNCTION(BlueprintCallable, Category="Needs")
 	bool TryBindLocalNeeds();
+
+private:
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarHunger;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarEnergy;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarFun;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarSocial;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarHygiene;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UProgressBar> BarBladder;
+
+	void BuildNativeLayout();
+	void AddNeedRow(class UVerticalBox* Root, const FText& Label, TObjectPtr<UProgressBar>& OutBar);
+	void UpdateNativeBars() const;
 };

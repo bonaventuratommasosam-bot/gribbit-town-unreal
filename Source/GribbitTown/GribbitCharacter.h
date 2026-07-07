@@ -8,6 +8,7 @@
 
 class UGribbitNeedsComponent;
 class UGribbitOutfitComponent;
+class UGribbitInteractionComponent;
 
 /**
  * AGribbitCharacter
@@ -51,6 +52,8 @@ public:
 	// Applies a DT_Characters row to this character (needs, outfit, tint).
 	UFUNCTION(BlueprintCallable, Category = "Gribbit")
 	void ApplyPreset(const FName& PresetID);
+
+	UCameraComponent* GetFollowCamera() const { return FollowCamera; }
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")

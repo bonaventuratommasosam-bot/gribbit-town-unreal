@@ -3,6 +3,16 @@
 #include "GribbitInteractionComponent.h"
 #include "GribbitNeedsWidget.h"
 #include "Blueprint/UserWidget.h"
+#include "UObject/ConstructorHelpers.h"
+
+AGribbitPlayerController::AGribbitPlayerController()
+{
+	static ConstructorHelpers::FClassFinder<UGribbitNeedsWidget> NeedsWidgetBP(TEXT("/Game/UI/WBP_NeedsBars"));
+	if (NeedsWidgetBP.Succeeded())
+	{
+		NeedsWidgetClass = NeedsWidgetBP.Class;
+	}
+}
 
 void AGribbitPlayerController::BeginPlay()
 {

@@ -4,6 +4,7 @@
 #include "GribbitOutfitComponent.h"
 #include "GribbitInteractionComponent.h"
 #include "GribbitCharacterData.h"
+#include "Components/CapsuleComponent.h"
 #include "Engine/DataTable.h"
 #include "Net/UnrealNetwork.h"
 
@@ -90,6 +91,8 @@ void AGribbitCharacter::ApplyPreset(const FName& PresetID)
 				NeedsComponent->ModifyNeed(FName("Energy"),  Row->StartEnergy  - NeedsComponent->GetNeed(FName("Energy")));
 				NeedsComponent->ModifyNeed(FName("Fun"),     Row->StartFun     - NeedsComponent->GetNeed(FName("Fun")));
 				NeedsComponent->ModifyNeed(FName("Social"),  Row->StartSocial  - NeedsComponent->GetNeed(FName("Social")));
+				NeedsComponent->ModifyNeed(FName("Hygiene"), Row->StartHygiene - NeedsComponent->GetNeed(FName("Hygiene")));
+				NeedsComponent->ModifyNeed(FName("Bladder"), Row->StartBladder - NeedsComponent->GetNeed(FName("Bladder")));
 			}
 			if (OutfitComponent)
 			{

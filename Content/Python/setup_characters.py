@@ -15,10 +15,12 @@ After running, open the GameMode and set DefaultFrogClass = BP_ChillPete.
 """
 
 import unreal
+import csv
+import io
 
 TARGET_BP_DIR = "/Game/Characters"
 DATA_DIR = "/Game/Data"
-BP_PARENT = "/Script/GribbitTown.AGribbitCharacter"
+BP_PARENT = "/Script/GribbitTown.GribbitCharacter"
 
 # The 7 iconic Gribbits (id -> display, bio, outfit, tint RGB, start needs)
 CHARACTERS = [
@@ -82,7 +84,7 @@ def create_character_bp(char):
         return bp_path
 
     factory = unreal.BlueprintFactory()
-    factory.set_editor_property("parent_class", unreal.load_object(None, BP_PARENT))
+    factory.set_editor_property("parent_class", unreal.load_class(None, BP_PARENT))
     asset = unreal.AssetToolsHelpers.get_asset_tools().create_asset(
         bp_name, TARGET_BP_DIR, unreal.Blueprint, factory)
     if not asset:
@@ -106,25 +108,45 @@ def create_character_data_table():
         dt = unreal.load_object(None, dt_path)
     else:
         factory = unreal.DataTableFactory()
-        factory.set_editor_property("structure", unreal.load_object(None, DATA_ROW_CLS))
+        factory.set_editor_property("struct", unreal.load_object(None, DATA_ROW_CLS))
         dt = unreal.AssetToolsHelpers.get_asset_tools().create_asset(
             "DT_Characters", DATA_DIR, unreal.DataTable, factory)
     if not dt:
         unreal.log_error("Failed to create DT_Characters")
         return
 
-    # Build row data via the editor data table.
+    output = io.StringIO()
+    writer = csv.writer(output, lineterminator="\n")
+    writer.writerow([
+        "Name",
+        "DisplayName",
+        "Bio",
+        "DefaultOutfit",
+        "BodyTint",
+        "StartHunger",
+        "StartEnergy",
+        "StartFun",
+        "StartSocial",
+        "StartHygiene",
+        "StartBladder",
+    ])
     for char in CHARACTERS:
-        row = unreal.GribbitCharacterRow()  # type exposed by the module
-        row.display_name = unreal.Text(char["display"])
-        row.bio = unreal.Text(char["bio"])
-        row.default_outfit = char["outfit"]
-        row.body_tint = unreal.LinearColor(*char["tint"], 1.0)
-        row.start_hunger = char["needs"][0]
-        row.start_energy = char["needs"][1]
-        row.start_fun = char["needs"][2]
-        row.start_social = char["needs"][3]
-        dt.add_row(char["id"], row)
+        r, g, b = char["tint"]
+        writer.writerow([
+            char["id"],
+            char["display"],
+            char["bio"],
+            char["outfit"],
+            f"(R={r},G={g},B={b},A=1.0)",
+            char["needs"][0],
+            char["needs"][1],
+            char["needs"][2],
+            char["needs"][3],
+            char["needs"][4],
+            char["needs"][5],
+        ])
+
+    unreal.DataTableFunctionLibrary.fill_data_table_from_csv_string(dt, output.getvalue())
 
     unreal.EditorAssetLibrary.save_asset(dt_path)
     unreal.log(f"Created/updated {dt_path} with {len(CHARACTERS)} rows")

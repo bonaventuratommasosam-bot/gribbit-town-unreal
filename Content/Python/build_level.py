@@ -22,6 +22,7 @@ DISTRICTS = {
 }
 
 STREET_MAT = None  # assign a material in the editor if desired
+CUBE = "/Engine/BasicShapes/Cube.Cube"
 
 
 def spawn_actor(cls_path, loc, name):
@@ -33,29 +34,46 @@ def spawn_actor(cls_path, loc, name):
     return actor
 
 
+def spawn_box(name, loc, scale):
+    actor = spawn_actor("/Script/Engine.StaticMeshActor", loc, name)
+    mesh = unreal.load_object(None, CUBE)
+    if actor and mesh:
+        actor.static_mesh_component.set_static_mesh(mesh)
+        actor.set_actor_scale3d(unreal.Vector(*scale))
+    return actor
+
+
 def build_map():
     if not unreal.EditorAssetLibrary.does_asset_exist(MAP_PATH):
         unreal.EditorLevelLibrary.new_level(MAP_PATH)
     else:
         unreal.EditorLevelLibrary.load_level(MAP_PATH)
 
-    # Ground plane (20000 x 20000, centered).
-    spawn_actor("/Script/Engine.StaticMeshActor",
-                (0.0, 0.0, 0.0), "Ground")
+    spawn_actor("/Script/Engine.PlayerStart", (0.0, -400.0, 120.0), "PlayerStart_Main")
+    spawn_actor("/Script/Engine.DirectionalLight", (0.0, 0.0, 800.0), "Sun")
+    spawn_actor("/Script/Engine.SkyLight", (0.0, 0.0, 500.0), "SkyLight")
+
+    # Ground plane (20000 x 20000, centered). Cube default is 100 uu.
+    spawn_box("Ground", (0.0, 0.0, -55.0), (200.0, 200.0, 1.0))
     # Streets: long thin boxes connecting TownCenter to each district.
     for dist, (x, y) in DISTRICTS.items():
         if dist == "TownCenter":
             continue
-        mid = ((x) / 2.0, (y) / 2.0, 1.0)
-        spawn_actor("/Script/Engine.StaticMeshActor", mid, f"Street_{dist}")
+        mid = ((x) / 2.0, (y) / 2.0, 2.0)
+        length = max(abs(x), abs(y)) / 100.0
+        if abs(x) >= abs(y):
+            spawn_box(f"Street_{dist}", mid, (length, 2.2, 0.08))
+        else:
+            spawn_box(f"Street_{dist}", mid, (2.2, length, 0.08))
 
     # Pizzeria block (interactable handled by BP placed in editor).
-    spawn_actor("/Script/Engine.StaticMeshActor",
-                (-2500.0, 1500.0, 0.0), "Building_Pizzeria")
+    spawn_box("Building_Pizzeria", (-2500.0, 1500.0, 140.0), (7.0, 6.0, 3.0))
+    spawn_box("Pizza_Oven", (-2200.0, 1500.0, 90.0), (1.5, 1.2, 1.1))
+    spawn_box("Bench_TownCenter", (450.0, 180.0, 45.0), (2.4, 0.6, 0.4))
 
     # Harbor water plane.
-    spawn_actor("/Script/Engine.StaticMeshActor",
-                (0.0, -3500.0, -10.0), "Harbor_Water")
+    spawn_box("Harbor_Water", (0.0, -3500.0, -40.0), (45.0, 22.0, 0.2))
+    spawn_box("Harbor_Dock", (0.0, -2800.0, 10.0), (16.0, 2.0, 0.25))
 
     # Townfolk spawn points (used by GameMode.SpawnTownfolk via DT_Characters).
     for i in range(7):
@@ -68,4 +86,4 @@ def build_map():
 
 
 if __name__ == "__main__":
-    build_level()
+    build_map()

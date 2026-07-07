@@ -3,6 +3,7 @@ Intermediate/
 Saved/
 DerivedDataCache/
 Build/
+Binaries/
 
 # Local build logs
 BUILD.log
@@ -14,5 +15,7 @@ Thumbs.db
 __pycache__/
 *.pyc
 
-# Generated binary assets (regenerate via Content/Python scripts)
+# Generated binary assets (regenerate via Content/Python scripts) — never commit
+*.uasset
+*.umap
 Content/Python/*.pyc

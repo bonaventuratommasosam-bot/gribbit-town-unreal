@@ -26,36 +26,36 @@ void UGribbitNeedsComponent::TickComponent(float DeltaTime, ELevelTick TickType,
 	// Only the server advances needs; clients receive replicated values.
 	if (GetOwner() && GetOwner()->HasAuthority())
 	{
-		DecayNeed(Hunger,  HungerDecay,  DeltaTime);
-		DecayNeed(Energy,  EnergyDecay,  DeltaTime);
-		DecayNeed(Fun,     FunDecay,     DeltaTime);
-		DecayNeed(Social,  SocialDecay,  DeltaTime);
-		DecayNeed(Hygiene, HygieneDecay, DeltaTime);
-		DecayNeed(Bladder, BladderDecay, DeltaTime);
+		DecayNeed("Hunger",  Hunger,  HungerDecay,  DeltaTime);
+		DecayNeed("Energy",  Energy,  EnergyDecay,  DeltaTime);
+		DecayNeed("Fun",     Fun,     FunDecay,     DeltaTime);
+		DecayNeed("Social",  Social,  SocialDecay,  DeltaTime);
+		DecayNeed("Hygiene", Hygiene, HygieneDecay, DeltaTime);
+		DecayNeed("Bladder", Bladder, BladderDecay, DeltaTime);
 	}
 }
 
-void UGribbitNeedsComponent::DecayNeed(float& Need, float Rate, float DeltaTime)
+void UGribbitNeedsComponent::DecayNeed(FName NeedName, float& Need, float Rate, float DeltaTime)
 {
 	const float Previous = Need;
 	Need = FMath::Clamp(Need - Rate * DeltaTime, 0.f, 100.f);
 	if (Previous >= 20.f && Need < 20.f)
 	{
-		OnNeedCritical.Broadcast(Previous <= Need ? NAME_None : GetFName());
+		OnNeedCritical.Broadcast(NeedName);
 	}
 }
 
 void UGribbitNeedsComponent::ModifyNeed(FName NeedName, float Amount)
 {
-	float* Value = NeedMap.Find(NeedName);
-	if (!Value) return;
-	*Value = FMath::Clamp(*Value + Amount, 0.f, 100.f);
+	float** Value = NeedMap.Find(NeedName);
+	if (!Value || !*Value) return;
+	**Value = FMath::Clamp(**Value + Amount, 0.f, 100.f);
 }
 
 float UGribbitNeedsComponent::GetNeed(FName NeedName) const
 {
-	const float* Value = NeedMap.Find(NeedName);
-	return Value ? *Value : 0.f;
+	float* const* Value = NeedMap.Find(NeedName);
+	return (Value && *Value) ? **Value : 0.f;
 }
 
 float UGribbitNeedsComponent::GetAverageNeed() const
