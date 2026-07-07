@@ -1,0 +1,13 @@
+# Unreal Engine build artifacts
+Intermediate/
+Saved/
+DerivedDataCache/
+Build/
+
+# Local build logs
+BUILD.log
+CREA-MAPPA.log
+
+# OS / editor noise
+Thumbs.db
+.DS_Store
