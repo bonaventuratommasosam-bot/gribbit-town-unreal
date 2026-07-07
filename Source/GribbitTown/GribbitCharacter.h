@@ -6,10 +6,22 @@
 #include "Camera/CameraComponent.h"
 #include "GribbitCharacter.generated.h"
 
+class UGribbitNeedsComponent;
+class UGribbitOutfitComponent;
+
 /**
- * The player-controllable Gribbit (frog).
- * Low-poly character with a skeletal mesh slot, ready to receive
- * the imported frog model + idle/walk animations, plus a follow camera.
+ * AGribbitCharacter
+ * 
+ * Base player-controlled Gribbit.
+ * 
+ * Features:
+ * - Movement (WASD + orient to movement)
+ * - Follow camera on spring arm
+ * - GribbitNeedsComponent (Hunger, Energy, Fun, Social...)
+ * - GribbitOutfitComponent (for iconic looks: Pizza, Cowboy, MARFA, etc.)
+ * 
+ * The 7 iconic characters (Chill Pete, Sheriff Buck, Max MARFA...) will be
+ * implemented as child Blueprints or subclasses of this.
  */
 UCLASS()
 class GRIBBITTOWN_API AGribbitCharacter : public ACharacter
@@ -21,16 +33,20 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
+	// Core Systems
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
+	TObjectPtr<UGribbitNeedsComponent> NeedsComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
+	TObjectPtr<UGribbitOutfitComponent> OutfitComponent;
+
 protected:
-	// Skeletal mesh placeholder for the frog (assign in Blueprint / editor).
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
 	TObjectPtr<USkeletalMeshComponent> FrogMesh;
 
-	// Spring arm holding the follow camera.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	// Player follow camera.
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
 	TObjectPtr<UCameraComponent> FollowCamera;
 
