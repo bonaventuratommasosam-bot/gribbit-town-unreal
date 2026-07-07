@@ -43,6 +43,16 @@ def spawn_box(name, loc, scale):
     return actor
 
 
+def spawn_consumable(loc, name, need_amounts, consume=False, prompt="Use"):
+    """Place an AGribbitConsumable in the level (Feature 4)."""
+    actor = spawn_actor("/Script/GribbitTown.GribbitConsumable", loc, name)
+    if actor:
+        actor.set_editor_property("need_amounts", need_amounts)
+        actor.set_editor_property("b_consume_on_use", consume)
+        actor.set_editor_property("interaction_prompt", unreal.Text(prompt))
+    return actor
+
+
 def build_map():
     if not unreal.EditorAssetLibrary.does_asset_exist(MAP_PATH):
         unreal.EditorLevelLibrary.new_level(MAP_PATH)
@@ -66,10 +76,16 @@ def build_map():
         else:
             spawn_box(f"Street_{dist}", mid, (2.2, length, 0.08))
 
-    # Pizzeria block (interactable handled by BP placed in editor).
+    # Pizzeria block.
     spawn_box("Building_Pizzeria", (-2500.0, 1500.0, 140.0), (7.0, 6.0, 3.0))
-    spawn_box("Pizza_Oven", (-2200.0, 1500.0, 90.0), (1.5, 1.2, 1.1))
+    # Interactable pizza oven: restores Hunger when used.
+    spawn_consumable((-2200.0, 1500.0, 90.0), "PizzaOven",
+                     {"Hunger": 45.0, "Fun": 5.0}, consume=False, prompt="Grab a slice")
+
+    # Town-center bench: restores Energy + Fun (a place to chill).
     spawn_box("Bench_TownCenter", (450.0, 180.0, 45.0), (2.4, 0.6, 0.4))
+    spawn_consumable((450.0, 220.0, 45.0), "Bench_Rest",
+                     {"Energy": 30.0, "Fun": 15.0, "Social": 10.0}, consume=False, prompt="Sit down")
 
     # Harbor water plane.
     spawn_box("Harbor_Water", (0.0, -3500.0, -40.0), (45.0, 22.0, 0.2))
