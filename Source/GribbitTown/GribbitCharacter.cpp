@@ -1,5 +1,7 @@
 #include "GribbitCharacter.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GribbitNeedsComponent.h"
+#include "GribbitOutfitComponent.h"
 
 AGribbitCharacter::AGribbitCharacter()
 {
@@ -7,9 +9,9 @@ AGribbitCharacter::AGribbitCharacter()
 
 	FrogMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FrogMesh"));
 	FrogMesh->SetupAttachment(GetCapsuleComponent());
-	FrogMesh->SetRelativeLocation(FVector(0.f, 0.f, -90.f)); // sit on capsule
+	FrogMesh->SetRelativeLocation(FVector(0.f, 0.f, -90.f));
 
-	// Follow camera on a spring arm so the player is visible.
+	// Spring arm + camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	SpringArm->TargetArmLength = 600.f;
@@ -28,6 +30,10 @@ AGribbitCharacter::AGribbitCharacter()
 	GetCharacterMovement()->MaxWalkSpeed = 400.f;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
+
+	// === Core Gribbit Systems ===
+	NeedsComponent = CreateDefaultSubobject<UGribbitNeedsComponent>(TEXT("NeedsComponent"));
+	OutfitComponent = CreateDefaultSubobject<UGribbitOutfitComponent>(TEXT("OutfitComponent"));
 }
 
 void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
