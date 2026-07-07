@@ -11,6 +11,21 @@
 #include "Materials/MaterialInstanceDynamic.h"
 #include "UObject/UObjectGlobals.h"
 
+/**
+ * GribbitTownGameMode.cpp
+ *
+ * Current implementation:
+ * - Spawns the player Gribbit (AGribbitCharacter)
+ * - Procedurally builds a basic closed town using primitive shapes
+ *   (for fast prototyping and testing movement/camera)
+ *
+ * Design alignment (from collaborative sessions):
+ * - This procedural approach is temporary for early testing.
+ * - Long-term goal: Move to manual level design + World Partition / Level Streaming.
+ * - Prepare systems for the 7 iconic characters (Chill Pete, Sheriff Buck, Max MARFA, etc.)
+ * - Foundation for Needs system, Outfit system, and future multiplayer.
+ */
+
 // Spawn a basic engine shape with a solid color. Safe if the mesh is missing.
 static AStaticMeshActor* SpawnShape(UWorld* World, const TCHAR* MeshPath, const FVector& Loc, const FRotator& Rot, const FVector& Scale, const FLinearColor& Color)
 {
@@ -51,7 +66,7 @@ void AGribbitTownGameMode::StartPlay()
 	UWorld* World = GetWorld();
 	if (!World) return;
 
-	// --- Lighting (otherwise the empty level is pitch black) ---
+	// --- Lighting ---
 	ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(ADirectionalLight::StaticClass(), FVector(0.f, 0.f, 600.f), FRotator(-45.f, 0.f, 0.f));
 	if (Sun)
 	{
@@ -67,15 +82,15 @@ void AGribbitTownGameMode::StartPlay()
 		Sky->bCapturedScene = true;
 	}
 
-	// --- Ground (green circular-ish town plate) : needs a wide plane for the closed world ---
+	// --- Ground ---
 	SpawnShape(World, TEXT("/Engine/BasicShapes/Plane"), FVector(0.f, 0.f, 0.f), FRotator(0.f, 0.f, 0.f), FVector(50.f, 50.f, 1.f), FLinearColor(0.20f, 0.55f, 0.25f));
 
-	// --- Central fountain (basin + water sphere) ---
+	// --- Central fountain ---
 	SpawnShape(World, TEXT("/Engine/BasicShapes/Cylinder"), FVector(0.f, 0.f, 50.f),  FRotator::ZeroRotator, FVector(180.f, 180.f, 50.f),  FLinearColor(0.75f, 0.75f, 0.78f));
 	SpawnShape(World, TEXT("/Engine/BasicShapes/Sphere"),   FVector(0.f, 0.f, 130.f), FRotator::ZeroRotator, FVector(110.f, 110.f, 80.f),  FLinearColor(0.25f, 0.55f, 0.85f));
 	SpawnShape(World, TEXT("/Engine/BasicShapes/Cylinder"), FVector(0.f, 0.f, 200.f), FRotator::ZeroRotator, FVector(25.f, 25.f, 200.f),  FLinearColor(0.65f, 0.65f, 0.70f));
 
-	// --- 6 Buildings around the center ---
+	// --- 6 Buildings ---
 	struct BInfo { FVector Pos; FVector Scale; FLinearColor Col; };
 	BInfo Buildings[6] = {
 		{ FVector(  0.f,  600.f, 300.f), FVector(120.f, 120.f, 300.f), FLinearColor(0.85f, 0.40f, 0.30f) },
@@ -90,7 +105,7 @@ void AGribbitTownGameMode::StartPlay()
 		SpawnShape(World, TEXT("/Engine/BasicShapes/Cube"), B.Pos, FRotator::ZeroRotator, B.Scale, B.Col);
 	}
 
-	// --- Trees (trunk + cone) ---
+	// --- Trees ---
 	struct TInfo { FVector Pos; };
 	TInfo Trees[8] = {
 		{ FVector( 300.f,  300.f, 0.f) }, { FVector(-300.f,  300.f, 0.f) },
@@ -104,7 +119,8 @@ void AGribbitTownGameMode::StartPlay()
 		SpawnShape(World, TEXT("/Engine/BasicShapes/Cone"),     T.Pos + FVector(0.f, 0.f, 220.f), FRotator::ZeroRotator, FVector(60.f, 60.f, 120.f), FLinearColor(0.15f, 0.60f, 0.20f));
 	}
 
-	// --- Frog NPCs (green spheres) scattered around ---
+	// --- Temporary Frog NPCs (green spheres) ---
+	// TODO: Replace with proper AGribbitCharacter instances using the 7 iconic characters
 	FVector FrogSpots[10] = {
 		FVector(  50.f,  100.f, 60.f), FVector( 250.f,  -50.f, 60.f),
 		FVector(-150.f,  200.f, 60.f), FVector( 400.f,  300.f, 60.f),
@@ -117,8 +133,8 @@ void AGribbitTownGameMode::StartPlay()
 		SpawnShape(World, TEXT("/Engine/BasicShapes/Sphere"), F, FRotator::ZeroRotator, FVector(60.f, 60.f, 60.f), FLinearColor(0.30f, 0.85f, 0.35f));
 	}
 
-	// --- Closed-world perimeter wall (4 invisible-ish low boxes around the map) ---
-	const float Half = 1200.f; // half-extent of the walkable area
+	// --- Closed-world perimeter ---
+	const float Half = 1200.f;
 	struct WInfo { FVector Pos; FVector Scale; };
 	WInfo Walls[4] = {
 		{ FVector(   0.f,  Half, 150.f), FVector(2.f * Half, 20.f, 300.f) },
