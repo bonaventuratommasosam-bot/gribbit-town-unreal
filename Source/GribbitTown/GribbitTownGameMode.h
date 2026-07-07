@@ -4,20 +4,21 @@
 #include "GameFramework/GameModeBase.h"
 #include "GribbitTownGameMode.generated.h"
 
+class AGribbitCharacter;
+class AGribbitPlayerController;
+class AGribbitPlayerState;
+
 /**
  * AGribbitTownGameMode
- * 
+ *
  * Main GameMode for Gribbits Town.
- * 
- * Current responsibilities:
- * - Spawn the player-controlled Gribbit (AGribbitCharacter)
- * - Procedurally generate a basic town layout at StartPlay (for quick prototyping)
- * 
- * Future direction (aligned with design):
- * - Move toward manual level design + World Partition / Level Streaming
- * - Initialize core systems: Needs, Character Manager, Town Manager
- * - Support for the 7 iconic characters (Chill Pete, Sheriff Buck, Max MARFA, etc.)
- * - Prepare foundation for online/multiplayer features
+ *
+ * Responsibilities:
+ * - Sets the default pawn / player controller / player state classes
+ *   (multiplayer-ready; Feature 5).
+ * - Loads the hand-authored level (GribbitTown_Main) instead of the old
+ *   procedural generation (Feature 3).
+ * - Spawns the townsfolk (the 7 iconic frogs) from DT_Characters.
  */
 UCLASS()
 class GRIBBITTOWN_API AGribbitTownGameMode : public AGameModeBase
@@ -27,9 +28,29 @@ class GRIBBITTOWN_API AGribbitTownGameMode : public AGameModeBase
 public:
 	AGribbitTownGameMode();
 
-	virtual void StartPlay() override;
+	// Default pawn (BP_ChillPete or the chosen frog), set in the editor.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit")
+	TSubclassOf<AGribbitCharacter> DefaultFrogClass;
 
-	// TODO: Add references to core managers once created
-	// UPROPERTY(EditDefaultsOnly, Category = "Gribbits Town")
-	// TSubclassOf<class UGribbitNeedsManager> NeedsManagerClass;
+	// Player controller / state classes for multiplayer.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit")
+	TSubclassOf<AGribbitPlayerController> DefaultFrogController;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit")
+	TSubclassOf<AGribbitPlayerState> DefaultFrogState;
+
+	// Map to load on start (replaces the old procedural generation).
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit")
+	FString DefaultMap = TEXT("/Game/Maps/GribbitTown_Main");
+
+	// Number of AI townsfolk to spawn from DT_Characters.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit")
+	int32 TownfolkCount = 6;
+
+	// Spawns the townsfolk from DT_Characters at level-design spawn points.
+	UFUNCTION(BlueprintCallable, Category="Gribbit")
+	void SpawnTownfolk();
+
+protected:
+	virtual void BeginPlay() override;
 };

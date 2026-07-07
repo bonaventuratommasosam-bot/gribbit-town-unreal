@@ -2,10 +2,15 @@
 #include "GameFramework/CharacterMovementComponent.h"
 #include "GribbitNeedsComponent.h"
 #include "GribbitOutfitComponent.h"
+#include "GribbitInteractionComponent.h"
+#include "GribbitCharacterData.h"
+#include "Engine/DataTable.h"
+#include "Net/UnrealNetwork.h"
 
 AGribbitCharacter::AGribbitCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
+	SetReplicates(true);
 
 	FrogMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FrogMesh"));
 	FrogMesh->SetupAttachment(GetCapsuleComponent());
@@ -34,6 +39,7 @@ AGribbitCharacter::AGribbitCharacter()
 	// === Core Gribbit Systems ===
 	NeedsComponent = CreateDefaultSubobject<UGribbitNeedsComponent>(TEXT("NeedsComponent"));
 	OutfitComponent = CreateDefaultSubobject<UGribbitOutfitComponent>(TEXT("OutfitComponent"));
+	InteractionComponent = CreateDefaultSubobject<UGribbitInteractionComponent>(TEXT("InteractionComponent"));
 }
 
 void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -59,5 +65,36 @@ void AGribbitCharacter::MoveRight(float Value)
 	{
 		const FRotator YawRotation(0.f, GetControlRotation().Yaw, 0.f);
 		AddMovementInput(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y), Value);
+	}
+}
+
+void AGribbitCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AGribbitCharacter, CharacterPresetID);
+}
+
+void AGribbitCharacter::ApplyPreset(const FName& PresetID)
+{
+	CharacterPresetID = PresetID;
+
+	// Resolve the data table row.
+	static const FString Context(TEXT("ApplyPreset"));
+	if (UDataTable* Table = LoadObject<UDataTable>(nullptr, TEXT("/Game/Data/DT_Characters.DT_Characters")))
+	{
+		if (const FGribbitCharacterRow* Row = Table->FindRow<FGribbitCharacterRow>(PresetID, Context))
+		{
+			if (NeedsComponent)
+			{
+				NeedsComponent->ModifyNeed(FName("Hunger"),  Row->StartHunger  - NeedsComponent->GetNeed(FName("Hunger")));
+				NeedsComponent->ModifyNeed(FName("Energy"),  Row->StartEnergy  - NeedsComponent->GetNeed(FName("Energy")));
+				NeedsComponent->ModifyNeed(FName("Fun"),     Row->StartFun     - NeedsComponent->GetNeed(FName("Fun")));
+				NeedsComponent->ModifyNeed(FName("Social"),  Row->StartSocial  - NeedsComponent->GetNeed(FName("Social")));
+			}
+			if (OutfitComponent)
+			{
+				OutfitComponent->SetOutfit(Row->DefaultOutfit);
+			}
+		}
 	}
 }

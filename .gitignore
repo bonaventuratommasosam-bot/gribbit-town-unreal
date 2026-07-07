@@ -11,3 +11,8 @@ CREA-MAPPA.log
 # OS / editor noise
 Thumbs.db
 .DS_Store
+__pycache__/
+*.pyc
+
+# Generated binary assets (regenerate via Content/Python scripts)
+Content/Python/*.pyc

@@ -40,6 +40,18 @@ public:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
 	TObjectPtr<UGribbitOutfitComponent> OutfitComponent;
 
+	// Interaction system (Feature 4)
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
+	TObjectPtr<UGribbitInteractionComponent> InteractionComponent;
+
+	// Preset key into DT_Characters; set by Blueprint children or the GameMode.
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Gribbit")
+	FName CharacterPresetID = NAME_None;
+
+	// Applies a DT_Characters row to this character (needs, outfit, tint).
+	UFUNCTION(BlueprintCallable, Category = "Gribbit")
+	void ApplyPreset(const FName& PresetID);
+
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
 	TObjectPtr<USkeletalMeshComponent> FrogMesh;
