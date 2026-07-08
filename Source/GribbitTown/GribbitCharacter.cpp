@@ -32,7 +32,6 @@ AGribbitCharacter::AGribbitCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
 
-	// Core Systems
 	NeedsComponent = CreateDefaultSubobject<UGribbitNeedsComponent>(TEXT("NeedsComponent"));
 	OutfitComponent = CreateDefaultSubobject<UGribbitOutfitComponent>(TEXT("OutfitComponent"));
 	InteractionComponent = CreateDefaultSubobject<UGribbitInteractionComponent>(TEXT("InteractionComponent"));
@@ -45,6 +44,9 @@ void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 
 	PlayerInputComponent->BindAxis("MoveForward", this, &AGribbitCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGribbitCharacter::MoveRight);
+
+	// Building input (tasto B per piazzare)
+	PlayerInputComponent->BindAction("Build", IE_Pressed, this, &AGribbitCharacter::TryBuild);
 }
 
 void AGribbitCharacter::MoveForward(float Value)
@@ -62,5 +64,13 @@ void AGribbitCharacter::MoveRight(float Value)
 	{
 		const FRotator YawRotation(0.f, GetControlRotation().Yaw, 0.f);
 		AddMovementInput(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y), Value);
+	}
+}
+
+void AGribbitCharacter::TryBuild()
+{
+	if (BuildingComponent && BuildingComponent->DefaultPlaceableObject)
+	{
+		BuildingComponent->PlaceObjectInFront(BuildingComponent->DefaultPlaceableObject);
 	}
 }
