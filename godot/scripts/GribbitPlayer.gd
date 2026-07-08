@@ -11,10 +11,24 @@ var pitch = 0.0
 
 var needs_system : Node
 
+var current_gribbit_color = Color(0.4, 0.8, 0.4)  # Default green frog color
+
 func _ready():
 	camera = $Camera3D
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	needs_system = get_node("../NeedsSystem")
+	apply_gribbit_color()
+
+func apply_gribbit_color():
+	var mesh_instance = $MeshInstance3D
+	if mesh_instance:
+		var material = StandardMaterial3D.new()
+		material.albedo_color = current_gribbit_color
+		mesh_instance.material_override = material
+
+func set_gribbit_color(new_color: Color):
+	current_gribbit_color = new_color
+	apply_gribbit_color()
 
 func _input(event):
 	if event is InputEventMouseMotion:
@@ -27,6 +41,11 @@ func _input(event):
 	# Interact with E
 	if event is InputEventKey and event.pressed and event.keycode == KEY_E:
 		try_interact()
+
+	# Switch Gribbit color with number keys (temporary)
+	if event is InputEventKey and event.pressed:
+		if event.keycode == KEY_5: set_gribbit_color(Color(0.9, 0.6, 0.3))  # Chill Pete style
+		if event.keycode == KEY_6: set_gribbit_color(Color(0.3, 0.5, 0.8))  # Sheriff / Max style
 
 func try_interact():
 	var space_state = get_world_3d().direct_space_state

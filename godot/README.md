@@ -14,11 +14,13 @@ Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser**.
 - [x] Sistema Bisogni completo (Fame, Energia, Divertimento, Social)
 - [x] UI visibile dei bisogni
 - [x] Interazione (E) che ripristina la fame
-- [x] Mondo con alberi
+- [x] Mondo con alberi e rocce
+- [x] Documentazione completa dei 7 Gribbits
+- [x] Supporto base per cambiare "Gribbit" (tasti 5-6)
 
 ## I 7 Gribbits Iconici
 
-Vedi il file `CHARACTERS.md` per i dettagli completi sui 7 personaggi principali.
+Vedi il file `CHARACTERS.md` per i dettagli completi.
 
 ## Controlli
 - **WASD** → Muoviti
@@ -27,6 +29,7 @@ Vedi il file `CHARACTERS.md` per i dettagli completi sui 7 personaggi principali
 - **Click Sinistro** → Piazza blocco
 - **Click Destro** → Rimuovi blocco
 - **1 / 2 / 3 / 4** → Cambia colore del blocco
+- **5 / 6** → Cambia tipo di Gribbit (temporaneo)
 - **E** → Interagisci
 
 ## Come Provare
@@ -37,10 +40,10 @@ Vedi il file `CHARACTERS.md` per i dettagli completi sui 7 personaggi principali
 
 ## Ottimizzazione per Web
 
-- `WEB_OPTIMIZATION.md` → Ottimizzazione generale HTML5
-- `DEBUG_PERFORMANCE.md` → Debug performance nel browser
-- `3D_ASSET_OPTIMIZATION.md` → Ottimizzazione asset 3D
-- `TEXTURE_COMPRESSION.md` → Compressione texture per web
+- `WEB_OPTIMIZATION.md`
+- `DEBUG_PERFORMANCE.md`
+- `3D_ASSET_OPTIMIZATION.md`
+- `TEXTURE_COMPRESSION.md`
 
 ## Come Esportare in HTML5
 

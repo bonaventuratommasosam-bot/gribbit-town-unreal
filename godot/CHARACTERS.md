@@ -9,51 +9,54 @@ Questi sono i 7 personaggi principali di Gribbits Town. Possono essere usati com
 ## Lista dei Personaggi
 
 ### 1. Chill Pete
-- **Ruolo**: Proprietario della pizzeria "Slice of Heaven"
-- **Personalità**: Rilassato, foodie, meme lord
-- **Look Iconico**: Pizza in testa, occhiali colorati, maglietta bianca
-- **Colore Blocco Associato**: Marrone (1)
+- **Ruolo**: Proprietario della pizzeria
+- **Personalità**: Rilassato, foodie
+- **Look**: Pizza in testa, occhiali colorati
+- **Colore**: Marrone/Arancione
 
 ### 2. Sheriff Buck
-- **Ruolo**: Sceriffo del paese
-- **Personalità**: Duro ma sprava, senso della giustizia
-- **Look Iconico**: Cowboy con pizza, stella dello sceriffo
-- **Colore Blocco Associato**: Verde (2)
+- **Ruolo**: Sceriffo
+- **Personalità**: Duro ma giusto
+- **Look**: Cowboy con stella
+- **Colore**: Verde
 
 ### 3. Max MARFA
-- **Ruolo**: Influencer e ambasciatore del brand MARFA
-- **Personalità**: Trendy, vanitoso ma simpatico
-- **Look Iconico**: Felpa MARFA, occhiali pixel
-- **Colore Blocco Associato**: Blu (3)
+- **Ruolo**: Influencer MARFA
+- **Personalità**: Trendy
+- **Look**: Felpa MARFA, occhiali pixel
+- **Colore**: Blu
 
 ### 4. Captain Finn
 - **Ruolo**: Capitano del porto
-- **Personalità**: Avventuroso e romantico
-- **Look Iconico**: Felpa a righe, occhiali da aviatore
-- **Colore Blocco Associato**: Arancione (4)
+- **Personalità**: Avventuroso
+- **Look**: Stile marinaio
+- **Colore**: Arancione
 
 ### 5. Elder Moss
 - **Ruolo**: Saggio del paese
-- **Personalità**: Calmo, saggio, leggermente burbero
-- **Look Iconico**: Barba bianca, mantello, bastone
-- **Colore Blocco Associato**: Verde scuro
+- **Personalità**: Calmo e saggio
+- **Look**: Barba, mantello
+- **Colore**: Verde scuro
 
 ### 6. Lord Tiberius
-- **Ruolo**: Tycoon ricco e losco
-- **Personalità**: Carismatico ma ambiguo
-- **Look Iconico**: Completo elegante viola, cilindro
-- **Colore Blocco Associato**: Viola
+- **Ruolo**: Tycoon
+- **Personalità**: Carismatico ma losco
+- **Look**: Completo viola, cilindro
+- **Colore**: Viola
 
 ### 7. Lana MARFA
-- **Ruolo**: Modella e ambasciatrice ufficiale MARFA
-- **Personalità**: Elegante e professionale
-- **Look Iconico**: Outfit completo MARFA bianco
-- **Colore Blocco Associato**: Bianco / Rosa chiaro
+- **Ruolo**: Modella MARFA
+- **Personalità**: Elegante
+- **Look**: Outfit fashion
+- **Colore**: Bianco/Rosa
 
-## Implementazione Futura
-- Sistema di selezione personaggio
-- Outfit diversi per ogni Gribbit
-- Dialoghi e quest uniche per ogni personaggio
-- Relazioni tra i 7 Gribbits
+## Implementazione Attuale
+- Supporto base per cambiare "Gribbit" con tasti 5-6 (cambia colore del giocatore)
+- Documentazione completa
 
-*Dettagli basati sul design originale del progetto*
+## Prossimi Passi
+- Sistema di selezione personaggio completo
+- Outfit e mesh diverse
+- Dialoghi e quest uniche
+
+*Dettagli basati sul design originale*
