@@ -1,53 +1,30 @@
-# Gribbits Town - Roadmap
+# Gribbits Town - Development Roadmap
 
-## Nuova Visione
-**Gribbits Town** è un mondo sandbox online stile **Mini World**, dove i giocatori vivono come Gribbits (rane antropomorfe).
+## Visione
+Sandbox online stile Mini World con rane antropomorfe (Gribbits). I giocatori possono esplorare, costruire, socializzare e gestire i bisogni dei loro personaggi.
 
-Focus principale:
-- Esplorazione
-- Costruzione
-- Socializzazione online
-- Vita leggera dei Gribbits (bisogni, attività, relazioni)
-
-## Stato Attuale
+## Stato Attuale (Luglio 2026)
 
 ### Completato
-- [x] Visione aggiornata (Mini World style + online)
-- [x] 7 Personaggi Iconici definiti
-- [x] Base C++ Character + Needs + Interaction + Outfit
-- [x] Multiplayer foundation (PlayerState + replication)
-- [x] Python automation per setup
+- [x] Movimento + telecamera
+- [x] Sistema di costruzione con 4 tipi di oggetti (Cubo, Cilindro, Sfera, Cono)
+- [x] Rimozione oggetti
+- [x] Interazione che influenza i bisogni (ripristina fame)
+- [x] Bisogni visibili a schermo + replicati in multiplayer
+- [x] Foundation multiplayer (costruzione sincronizzata)
+- [x] Supporto per i 7 personaggi iconici
+- [x] Mondo iniziale con oggetti piazzati
 
-### In Corso / Prossimo
-- [ ] Sistema di costruzione base (blocchi / oggetti piazzabili)
-- [ ] Mondo persistente con World Partition
-- [ ] Migliorare Needs System e collegarlo a interazioni
-- [ ] Creare i 7 Gribbits come personaggi speciali (Data Asset + Blueprint)
-- [ ] Sistema di esplorazione (portali, aree segrete, ecc.)
+### In Sviluppo
+- [ ] UI vera per i bisogni (Widget)
+- [ ] Selezione / switch tra i 7 Gribbits
+- [ ] Più varietà di oggetti costruibili
+- [ ] Miglioramenti al mondo e lighting
 
-## Fasi di Sviluppo
+## Prossimi Obiettivi
+1. Rendere il gioco più piacevole da giocare da subito
+2. Aggiungere feedback visivo e sonoro
+3. Integrare meglio i 7 personaggi iconici
+4. Espandere il sistema di costruzione
 
-### Fase 1 - Fondazione Online (Attuale)
-- Character system solido
-- Needs + Interaction
-- Multiplayer base (listen server)
-- World Partition setup
-
-### Fase 2 - Sandbox Core
-- Sistema di costruzione semplice
-- Oggetti piazzabili e salvataggio
-- Esplorazione del mondo
-
-### Fase 3 - Vita dei Gribbits
-- I 7 personaggi iconici come NPC / preset
-- Attività e mini-job
-- Eventi di paese
-
-### Fase 4 - Polish & Espansione
-- UI carina stile Mini World
-- Audio e atmosfera
-- Più contenuti e aree segrete
-
----
-
-*Roadmap aggiornata in base alla nuova direzione*
+*Roadmap aggiornata automaticamente*
