@@ -3,21 +3,16 @@
 #include "GribbitNeedsComponent.h"
 #include "GribbitOutfitComponent.h"
 #include "GribbitInteractionComponent.h"
-#include "GribbitCharacterData.h"
-#include "Components/CapsuleComponent.h"
-#include "Engine/DataTable.h"
-#include "Net/UnrealNetwork.h"
+#include "GribbitBuildingComponent.h"
 
 AGribbitCharacter::AGribbitCharacter()
 {
 	PrimaryActorTick.bCanEverTick = false;
-	SetReplicates(true);
 
 	FrogMesh = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("FrogMesh"));
 	FrogMesh->SetupAttachment(GetCapsuleComponent());
 	FrogMesh->SetRelativeLocation(FVector(0.f, 0.f, -90.f));
 
-	// Spring arm + camera
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("SpringArm"));
 	SpringArm->SetupAttachment(GetCapsuleComponent());
 	SpringArm->TargetArmLength = 600.f;
@@ -37,10 +32,11 @@ AGribbitCharacter::AGribbitCharacter()
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.f, 360.f, 0.f);
 
-	// === Core Gribbit Systems ===
+	// Core Systems
 	NeedsComponent = CreateDefaultSubobject<UGribbitNeedsComponent>(TEXT("NeedsComponent"));
 	OutfitComponent = CreateDefaultSubobject<UGribbitOutfitComponent>(TEXT("OutfitComponent"));
 	InteractionComponent = CreateDefaultSubobject<UGribbitInteractionComponent>(TEXT("InteractionComponent"));
+	BuildingComponent = CreateDefaultSubobject<UGribbitBuildingComponent>(TEXT("BuildingComponent"));
 }
 
 void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -66,38 +62,5 @@ void AGribbitCharacter::MoveRight(float Value)
 	{
 		const FRotator YawRotation(0.f, GetControlRotation().Yaw, 0.f);
 		AddMovementInput(FRotationMatrix(YawRotation).GetUnitAxis(EAxis::Y), Value);
-	}
-}
-
-void AGribbitCharacter::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	DOREPLIFETIME(AGribbitCharacter, CharacterPresetID);
-}
-
-void AGribbitCharacter::ApplyPreset(const FName& PresetID)
-{
-	CharacterPresetID = PresetID;
-
-	// Resolve the data table row.
-	static const FString Context(TEXT("ApplyPreset"));
-	if (UDataTable* Table = LoadObject<UDataTable>(nullptr, TEXT("/Game/Data/DT_Characters.DT_Characters")))
-	{
-		if (const FGribbitCharacterRow* Row = Table->FindRow<FGribbitCharacterRow>(PresetID, Context))
-		{
-			if (NeedsComponent)
-			{
-				NeedsComponent->ModifyNeed(FName("Hunger"),  Row->StartHunger  - NeedsComponent->GetNeed(FName("Hunger")));
-				NeedsComponent->ModifyNeed(FName("Energy"),  Row->StartEnergy  - NeedsComponent->GetNeed(FName("Energy")));
-				NeedsComponent->ModifyNeed(FName("Fun"),     Row->StartFun     - NeedsComponent->GetNeed(FName("Fun")));
-				NeedsComponent->ModifyNeed(FName("Social"),  Row->StartSocial  - NeedsComponent->GetNeed(FName("Social")));
-				NeedsComponent->ModifyNeed(FName("Hygiene"), Row->StartHygiene - NeedsComponent->GetNeed(FName("Hygiene")));
-				NeedsComponent->ModifyNeed(FName("Bladder"), Row->StartBladder - NeedsComponent->GetNeed(FName("Bladder")));
-			}
-			if (OutfitComponent)
-			{
-				OutfitComponent->SetOutfit(Row->DefaultOutfit);
-			}
-		}
 	}
 }
