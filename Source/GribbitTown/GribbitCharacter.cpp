@@ -48,15 +48,12 @@ void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Build", IE_Pressed, this, &AGribbitCharacter::TryBuild);
 	PlayerInputComponent->BindAction("Remove", IE_Pressed, this, &AGribbitCharacter::TryRemove);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGribbitCharacter::TryInteract);
-}
 
-void AGribbitCharacter::ApplyCharacterData(const FGribbitCharacterData& Data)
-{
-	if (OutfitComponent)
-	{
-		OutfitComponent->SetOutfit(Data.DefaultOutfit);
-	}
-	// TODO: Apply DisplayName, BodyTint, etc. when we have visuals
+	// Build type switching
+	PlayerInputComponent->BindAction("BuildType1", IE_Pressed, this, &AGribbitCharacter::SetBuildType_Cube);
+	PlayerInputComponent->BindAction("BuildType2", IE_Pressed, this, &AGribbitCharacter::SetBuildType_Cylinder);
+	PlayerInputComponent->BindAction("BuildType3", IE_Pressed, this, &AGribbitCharacter::SetBuildType_Sphere);
+	PlayerInputComponent->BindAction("BuildType4", IE_Pressed, this, &AGribbitCharacter::SetBuildType_Cone);
 }
 
 void AGribbitCharacter::MoveForward(float Value)
@@ -81,7 +78,7 @@ void AGribbitCharacter::TryBuild()
 {
 	if (BuildingComponent)
 	{
-		BuildingComponent->PlaceObjectInFront(BuildingComponent->DefaultPlaceableObject);
+		BuildingComponent->PlaceObjectInFront(BuildingComponent->CurrentBuildType);
 	}
 }
 
@@ -100,3 +97,8 @@ void AGribbitCharacter::TryInteract()
 		InteractionComponent->TryInteract();
 	}
 }
+
+void AGribbitCharacter::SetBuildType_Cube()     { if (BuildingComponent) BuildingComponent->SetBuildType(EBuildObjectType::Cube); }
+void AGribbitCharacter::SetBuildType_Cylinder() { if (BuildingComponent) BuildingComponent->SetBuildType(EBuildObjectType::Cylinder); }
+void AGribbitCharacter::SetBuildType_Sphere()   { if (BuildingComponent) BuildingComponent->SetBuildType(EBuildObjectType::Sphere); }
+void AGribbitCharacter::SetBuildType_Cone()     { if (BuildingComponent) BuildingComponent->SetBuildType(EBuildObjectType::Cone); }
