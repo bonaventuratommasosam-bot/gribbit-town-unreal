@@ -1,7 +1,8 @@
-[gd_scene load_steps=7 format=3 uid="uid://mainworld"]
+[gd_scene load_steps=9 format=3 uid="uid://mainworld"]
 
 [ext_resource type="PackedScene" uid="uid://gribbitplayer" path="res://scenes/GribbitPlayer.tscn" id="1"]
 [ext_resource type="Script" path="res://scripts/BuildingSystem.gd" id="2"]
+[ext_resource type="Script" path="res://scripts/NeedsSystem.gd" id="3"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(100, 1, 100)
@@ -15,6 +16,9 @@ albedo_color = Color(0.35, 0.65, 0.35, 1)
 [sub_resource type="BoxMesh" id="BoxMesh_Preview"]
 size = Vector3(0.95, 0.95, 0.95)
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_1"]
+bg_color = Color(0, 0, 0, 0.5)
+
 [node name="MainWorld" type="Node3D"]
 
 [node name="GribbitPlayer" parent="." instance=ExtResource("1")]
@@ -22,6 +26,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
 
 [node name="BuildingSystem" type="Node3D" parent="."]
 script = ExtResource("2")
+
+[node name="NeedsSystem" type="Node" parent="."]
+script = ExtResource("3")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 15, 0)
@@ -40,5 +47,38 @@ material_override = SubResource("StandardMaterial3D_1")
 [node name="BuildPreview" type="MeshInstance3D" parent="."]
 mesh = SubResource("BoxMesh_Preview")
 visible = false
+
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NeedsPanel" type="Panel" parent="UI"]
+layout_mode = 0
+offset_left = 20.0
+offset_top = 20.0
+offset_right = 220.0
+offset_bottom = 140.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_1")
+
+[node name="HungerLabel" type="Label" parent="UI/NeedsPanel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 15.0
+offset_right = 185.0
+offset_bottom = 38.0
+text = "Fame: 80"
+
+[node name="EnergyLabel" type="Label" parent="UI/NeedsPanel"]
+layout_mode = 0
+offset_left = 15.0
+offset_top = 45.0
+offset_right = 185.0
+offset_bottom = 68.0
+text = "Energia: 80"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
