@@ -7,10 +7,9 @@
 /**
  * UGribbitBuildingComponent
  * 
- * Componente base per il sistema di costruzione stile Mini World / sandbox.
- * Permette al Gribbit di piazzare oggetti, blocchi e strutture.
- * 
- * Questa è la base per il gameplay sandbox online.
+ * Sistema di costruzione base stile Mini World / sandbox.
+ * Permette di piazzare oggetti semplici.
+ * Versione iniziale per rendere il gioco giocabile il prima possibile.
  */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GRIBBITTOWN_API UGribbitBuildingComponent : public UActorComponent
@@ -20,8 +19,11 @@ class GRIBBITTOWN_API UGribbitBuildingComponent : public UActorComponent
 public:
 	UGribbitBuildingComponent();
 
+	/** Prova a piazzare un oggetto di fronte al giocatore */
 	UFUNCTION(BlueprintCallable, Category = "Building")
-	bool TryPlaceObject(TSubclassOf<AActor> ObjectClass, const FTransform& Transform);
+	bool PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance = 200.f);
 
-	// TODO: Aggiungere sistema di preview, snapping, rimozione oggetti, salvataggio
+	/** Oggetto di esempio da piazzare (puoi cambiarlo in Blueprint) */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
+	TSubclassOf<AActor> DefaultPlaceableObject;
 };
