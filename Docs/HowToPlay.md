@@ -1,10 +1,11 @@
 # Come Giocare a Gribbits Town (Versione Attuale)
 
-## Controlli
+## Controlli Attuali
 - **WASD** → Muoviti
 - **Mouse** → Guarda intorno
-- **B** → Piazza un oggetto di fronte a te (cubo di default)
-- **E** → Prova a interagire con oggetti di fronte a te
+- **B** → Piazza un cubo di fronte a te
+- **R** → Rimuovi l'oggetto di fronte a te
+- **E** → Interagisci con l'oggetto di fronte a te
 
 ## Come Avviarlo Subito
 
@@ -13,15 +14,15 @@
 3. Apri la mappa `Content/Maps/GribbitTown_Main.umap`
 4. Premi **Play**
 
-Dovresti poter muoverti e premere **B** per piazzare cubi.
+Dovresti poter muoverti liberamente e usare **B** / **R** per costruire e distruggere.
 
-## Per Giocare Online
-1. Avvia come **Listen Server** (dal menu o da console con `open`)
-2. Un altro giocatore può unirsi con l'indirizzo IP del server.
+## Per Giocare in Modalità Online
+- Avvia come **Listen Server**
+- Un altro giocatore può unirsi con il tuo IP
 
-## Note
-- Il sistema di costruzione è base ma funzionante.
-- I bisogni e l'interazione sono attivi.
-- I 7 Gribbits iconici sono definiti ma non ancora completamente integrati visivamente.
+## Note Importanti
+- Il sistema è ancora in fase iniziale ma già giocabile.
+- I 7 Gribbits iconici sono definiti ma non ancora completamente visivi.
+- Il sistema Needs è attivo in background.
 
-*Aggiornato per essere il più giocabile possibile*
+*Versione aggiornata per essere il più giocabile possibile*
