@@ -2,6 +2,7 @@
 #include "GameFramework/Character.h"
 #include "Engine/World.h"
 #include "DrawDebugHelpers.h"
+#include "GribbitNeedsComponent.h"
 
 UGribbitInteractionComponent::UGribbitInteractionComponent()
 {
@@ -27,11 +28,14 @@ void UGribbitInteractionComponent::TryInteract()
 		AActor* HitActor = HitResult.GetActor();
 		if (HitActor)
 		{
-			// TODO: Chiamare interfaccia di interazione o evento
-			UE_LOG(LogTemp, Log, TEXT("Interacted with: %s"), *HitActor->GetName());
+			// Basic interaction effect: restore some hunger when interacting
+			if (UGribbitNeedsComponent* Needs = OwnerChar->FindComponentByClass<UGribbitNeedsComponent>())
+			{
+				Needs->ModifyNeed("Hunger", 15.f);
+				UE_LOG(LogTemp, Log, TEXT("Interacted! Hunger restored."));
+			}
 		}
 	}
 
-	// Debug line
-	DrawDebugLine(World, Start, End, FColor::Green, false, 1.0f);
+	DrawDebugLine(World, Start, End, FColor::Green, false, 1.5f);
 }
