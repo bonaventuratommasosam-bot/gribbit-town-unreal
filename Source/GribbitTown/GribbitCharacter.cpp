@@ -50,6 +50,15 @@ void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGribbitCharacter::TryInteract);
 }
 
+void AGribbitCharacter::ApplyCharacterData(const FGribbitCharacterData& Data)
+{
+	if (OutfitComponent)
+	{
+		OutfitComponent->SetOutfit(Data.DefaultOutfit);
+	}
+	// TODO: Apply DisplayName, BodyTint, etc. when we have visuals
+}
+
 void AGribbitCharacter::MoveForward(float Value)
 {
 	if (Controller && Value != 0.f)
