@@ -1,28 +1,30 @@
-# Come Giocare a Gribbits Town (Versione Attuale)
+# Gribbits Town - Come Giocare (Stato Attuale)
 
-## Controlli Attuali
+## Controlli
 - **WASD** → Muoviti
 - **Mouse** → Guarda intorno
-- **B** → Piazza un cubo di fronte a te
-- **R** → Rimuovi l'oggetto di fronte a te
-- **E** → Interagisci con l'oggetto di fronte a te
+- **B** → Piazza un cubo
+- **R** → Rimuovi l'oggetto di fronte
+- **E** → Interagisci
 
-## Come Avviarlo Subito
+## Come Avviarlo
 
-1. Apri `GribbitTown.uproject` con Unreal Engine 5.5
-2. Compila il progetto (Development Editor)
-3. Apri la mappa `Content/Maps/GribbitTown_Main.umap`
+1. Apri il progetto con Unreal Engine 5.5
+2. Compila il C++
+3. Apri `Content/Maps/GribbitTown_Main.umap`
 4. Premi **Play**
 
-Dovresti poter muoverti liberamente e usare **B** / **R** per costruire e distruggere.
+Il gioco è già giocabile in modalità sandbox base.
 
-## Per Giocare in Modalità Online
+## Online (Multiplayer)
 - Avvia come **Listen Server**
-- Un altro giocatore può unirsi con il tuo IP
+- Gli altri giocatori possono unirsi
+- Costruzione e rimozione funzionano in multiplayer
 
-## Note Importanti
-- Il sistema è ancora in fase iniziale ma già giocabile.
-- I 7 Gribbits iconici sono definiti ma non ancora completamente visivi.
-- Il sistema Needs è attivo in background.
+## Prossimi Miglioramenti Previsti
+- UI per i bisogni
+- Selezione dei 7 Gribbits
+- Più oggetti da piazzare
+- Mondo più ricco
 
-*Versione aggiornata per essere il più giocabile possibile*
+*Progetto orientato a diventare giocabile il prima possibile*
