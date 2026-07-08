@@ -3,28 +3,21 @@
 ## Controlli
 - **WASD** → Muoviti
 - **Mouse** → Guarda intorno
-- **B** → Piazza un cubo
-- **R** → Rimuovi l'oggetto di fronte
+- **B** → Piazza oggetto
+- **R** → Rimuovi oggetto
 - **E** → Interagisci
+- **1 / 2 / 3 / 4** → Cambia tipo di oggetto da costruire (Cubo, Cilindro, Sfera, Cono)
 
 ## Come Avviarlo
 
-1. Apri il progetto con Unreal Engine 5.5
+1. Clona il repo o apri il progetto con Unreal Engine 5.5
 2. Compila il C++
 3. Apri `Content/Maps/GribbitTown_Main.umap`
 4. Premi **Play**
 
-Il gioco è già giocabile in modalità sandbox base.
+Il gioco è già giocabile come sandbox base con costruzione multiplayer.
 
-## Online (Multiplayer)
-- Avvia come **Listen Server**
-- Gli altri giocatori possono unirsi
-- Costruzione e rimozione funzionano in multiplayer
+## Online
+Costruzione e rimozione funzionano correttamente in modalità Listen Server.
 
-## Prossimi Miglioramenti Previsti
-- UI per i bisogni
-- Selezione dei 7 Gribbits
-- Più oggetti da piazzare
-- Mondo più ricco
-
-*Progetto orientato a diventare giocabile il prima possibile*
+*Progetto in continuo sviluppo*
