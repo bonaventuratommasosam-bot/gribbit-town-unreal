@@ -46,6 +46,7 @@ void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGribbitCharacter::MoveRight);
 
 	PlayerInputComponent->BindAction("Build", IE_Pressed, this, &AGribbitCharacter::TryBuild);
+	PlayerInputComponent->BindAction("Remove", IE_Pressed, this, &AGribbitCharacter::TryRemove);
 	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGribbitCharacter::TryInteract);
 }
 
@@ -72,6 +73,14 @@ void AGribbitCharacter::TryBuild()
 	if (BuildingComponent)
 	{
 		BuildingComponent->PlaceObjectInFront(BuildingComponent->DefaultPlaceableObject);
+	}
+}
+
+void AGribbitCharacter::TryRemove()
+{
+	if (BuildingComponent)
+	{
+		BuildingComponent->RemoveObjectInFront();
 	}
 }
 
