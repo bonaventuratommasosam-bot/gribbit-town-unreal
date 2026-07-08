@@ -7,21 +7,22 @@ extends Node
 
 @onready var hunger_label = $"../UI/NeedsPanel/HungerLabel"
 @onready var energy_label = $"../UI/NeedsPanel/EnergyLabel"
+@onready var fun_label = $"../UI/NeedsPanel/FunLabel"
+@onready var social_label = $"../UI/NeedsPanel/SocialLabel"
 
 func _process(delta):
-	# Slow decay
-	hunger = clamp(hunger - 0.5 * delta, 0, 100)
-	energy = clamp(energy - 0.3 * delta, 0, 100)
-	fun = clamp(fun - 0.4 * delta, 0, 100)
-	social = clamp(social - 0.25 * delta, 0, 100)
+	hunger = clamp(hunger - 0.6 * delta, 0, 100)
+	energy = clamp(energy - 0.35 * delta, 0, 100)
+	fun = clamp(fun - 0.45 * delta, 0, 100)
+	social = clamp(social - 0.3 * delta, 0, 100)
 
 	update_ui()
 
 func update_ui():
-	if hunger_label:
-		hunger_label.text = "Fame: %d" % hunger
-	if energy_label:
-		energy_label.text = "Energia: %d" % energy
+	if hunger_label: hunger_label.text = "Fame: %d" % hunger
+	if energy_label: energy_label.text = "Energia: %d" % energy
+	if fun_label: fun_label.text = "Divertimento: %d" % fun
+	if social_label: social_label.text = "Social: %d" % social
 
 func modify_need(need_name: String, amount: float):
 	match need_name:
