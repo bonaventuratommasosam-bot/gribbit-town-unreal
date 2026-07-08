@@ -1,28 +1,22 @@
-# Gribbits Town - Godot Edition
+# Gribbits Town - Godot Web Version
 
-**Obiettivo**: Gioco sandbox stile Mini World con i Gribbits, esportabile direttamente nel browser (HTML5).
+## Come Testare Localmente
 
-## Vantaggi di Godot per questo progetto
-- Esportazione Web nativa e semplice
-- Leggero e facile da distribuire su sito
-- Buona comunità e documentazione
-- Networking decente per multiplayer
+1. Apri la cartella `godot/` con Godot 4.3+
+2. Apri la scena `MainWorld.tscn`
+3. Premi Play
 
-## Struttura del Progetto
-
-```
-godot/
-├── scenes/
-├── scripts/
-├── assets/
-├── autoload/
-└── project.godot
-```
+## Controlli
+- **WASD** → Muoviti
+- **Mouse** → Guarda intorno
+- **Spazio** → Salta
+- **Click Sinistro** → Piazza blocco
+- **Click Destro** → Rimuovi blocco
 
 ## Prossimi Passi
-1. Creare i personaggi Gribbit (scene + script)
-2. Sistema di costruzione base
-3. Sistema bisogni leggero
-4. Esportazione Web
+- Aggiungere UI
+- Sistema bisogni
+- I 7 Gribbits
+- Esportazione HTML5
 
-*Progetto migrato da Unreal a Godot per distribuzione web*
+*Versione pensata per essere giocata direttamente dal browser*

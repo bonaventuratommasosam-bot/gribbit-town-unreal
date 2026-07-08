@@ -1,6 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://mainworld"]
+[gd_scene load_steps=7 format=3 uid="uid://mainworld"]
 
 [ext_resource type="PackedScene" uid="uid://gribbitplayer" path="res://scenes/GribbitPlayer.tscn" id="1"]
+[ext_resource type="Script" path="res://scripts/BuildingSystem.gd" id="2"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_1"]
 size = Vector3(100, 1, 100)
@@ -9,12 +10,18 @@ size = Vector3(100, 1, 100)
 size = Vector3(100, 1, 100)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1"]
-albedo_color = Color(0.3, 0.6, 0.3, 1)
+albedo_color = Color(0.35, 0.65, 0.35, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_Preview"]
+size = Vector3(0.95, 0.95, 0.95)
 
 [node name="MainWorld" type="Node3D"]
 
 [node name="GribbitPlayer" parent="." instance=ExtResource("1")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2, 0)
+
+[node name="BuildingSystem" type="Node3D" parent="."]
+script = ExtResource("2")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 0, 15, 0)
@@ -31,11 +38,7 @@ mesh = SubResource("BoxMesh_1")
 material_override = SubResource("StandardMaterial3D_1")
 
 [node name="BuildPreview" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
-visible = false
 mesh = SubResource("BoxMesh_Preview")
-
-[sub_resource type="BoxMesh" id="BoxMesh_Preview"]
-size = Vector3(1, 1, 1)
+visible = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
