@@ -31,9 +31,13 @@ Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser**.
 2. Apri `MainMenu.tscn` o `MainWorld.tscn`
 3. Premi Play
 
+## Ottimizzazione Asset 3D per Web
+
+Vedi il file `3D_ASSET_OPTIMIZATION.md` per una guida completa su come ottimizzare mesh, texture e materiali per l'esportazione HTML5.
+
 ## Debug Performance nel Browser
 
-Vedi il file `DEBUG_PERFORMANCE.md` per una guida completa su come monitorare e ottimizzare le performance quando il gioco gira nel browser.
+Vedi il file `DEBUG_PERFORMANCE.md` per monitorare le performance quando il gioco gira nel browser.
 
 ## Come Esportare in HTML5
 
