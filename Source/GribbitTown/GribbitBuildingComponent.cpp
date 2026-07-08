@@ -3,14 +3,22 @@
 #include "Engine/World.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/StaticMeshComponent.h"
+#include "Net/UnrealNetwork.h"
 #include "DrawDebugHelpers.h"
 
 UGribbitBuildingComponent::UGribbitBuildingComponent()
 {
+	SetIsReplicated(true);
+
 	if (!DefaultPlaceableObject)
 	{
 		DefaultPlaceableObject = AStaticMeshActor::StaticClass();
 	}
+}
+
+void UGribbitBuildingComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 
 bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance)
