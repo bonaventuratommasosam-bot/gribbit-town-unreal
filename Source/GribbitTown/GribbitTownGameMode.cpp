@@ -16,25 +16,39 @@ void AGribbitTownGameMode::StartPlay()
 	UWorld* World = GetWorld();
 	if (!World) return;
 
-	// Basic lighting
+	// Lighting
 	if (ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(ADirectionalLight::StaticClass(), FVector(0,0,600), FRotator(-45,0,0)))
 	{
 		Sun->GetLightComponent()->SetIntensity(3.f);
 	}
-
 	if (ASkyLight* Sky = World->SpawnActor<ASkyLight>(ASkyLight::StaticClass(), FVector(0,0,600), FRotator::ZeroRotator))
 	{
 		Sky->GetLightComponent()->SetIntensity(1.f);
 	}
 
-	// Spawn a few initial objects so the world isn't empty
-	FVector StartLoc = FVector(200, 0, 50);
-	for (int i = 0; i < 5; i++)
+	// Spawn some initial objects to make the world feel more alive
+	FVector BaseLocation = FVector(300, 0, 50);
+
+	// Cubes in a line
+	for (int i = 0; i < 6; i++)
 	{
-		if (AStaticMeshActor* Cube = World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), StartLoc + FVector(i * 150, 0, 0), FRotator::ZeroRotator))
+		if (AStaticMeshActor* Obj = World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), BaseLocation + FVector(i * 120, 0, 0), FRotator::ZeroRotator))
 		{
 			UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube"));
-			if (Mesh) Cube->GetStaticMeshComponent()->SetStaticMesh(Mesh);
+			if (Mesh) Obj->GetStaticMeshComponent()->SetStaticMesh(Mesh);
 		}
+	}
+
+	// Some cylinders and spheres for variety
+	if (AStaticMeshActor* Cyl = World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FVector(200, 300, 80), FRotator::ZeroRotator))
+	{
+		UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cylinder"));
+		if (Mesh) Cyl->GetStaticMeshComponent()->SetStaticMesh(Mesh);
+	}
+
+	if (AStaticMeshActor* Sph = World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), FVector(400, -250, 80), FRotator::ZeroRotator))
+	{
+		UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Sphere"));
+		if (Mesh) Sph->GetStaticMeshComponent()->SetStaticMesh(Mesh);
 	}
 }
