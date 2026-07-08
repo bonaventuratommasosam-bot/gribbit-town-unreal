@@ -9,20 +9,21 @@
 class UGribbitNeedsComponent;
 class UGribbitOutfitComponent;
 class UGribbitInteractionComponent;
+class UGribbitBuildingComponent;
 
 /**
  * AGribbitCharacter
  * 
- * Base player-controlled Gribbit.
+ * Personaggio principale giocabile (Gribbit).
  * 
- * Features:
- * - Movement (WASD + orient to movement)
- * - Follow camera on spring arm
- * - GribbitNeedsComponent (Hunger, Energy, Fun, Social...)
- * - GribbitOutfitComponent (for iconic looks: Pizza, Cowboy, MARFA, etc.)
+ * Include:
+ * - Movimento
+ * - Sistema Bisogni (Needs)
+ * - Sistema Outfit
+ * - Sistema Interazione
+ * - Sistema Costruzione (Building) - stile Mini World
  * 
- * The 7 iconic characters (Chill Pete, Sheriff Buck, Max MARFA...) will be
- * implemented as child Blueprints or subclasses of this.
+ * I 7 personaggi iconici saranno versioni specializzate di questa classe.
  */
 UCLASS()
 class GRIBBITTOWN_API AGribbitCharacter : public ACharacter
@@ -34,35 +35,27 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
-	// Core Systems
+	// === Core Systems ===
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<UGribbitNeedsComponent> NeedsComponent;
+	TObjectPtr<class UGribbitNeedsComponent> NeedsComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<UGribbitOutfitComponent> OutfitComponent;
+	TObjectPtr<class UGribbitOutfitComponent> OutfitComponent;
 
-	// Interaction system (Feature 4)
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<UGribbitInteractionComponent> InteractionComponent;
+	TObjectPtr<class UGribbitInteractionComponent> InteractionComponent;
 
-	// Preset key into DT_Characters; set by Blueprint children or the GameMode.
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Replicated, Category = "Gribbit")
-	FName CharacterPresetID = NAME_None;
-
-	// Applies a DT_Characters row to this character (needs, outfit, tint).
-	UFUNCTION(BlueprintCallable, Category = "Gribbit")
-	void ApplyPreset(const FName& PresetID);
-
-	UCameraComponent* GetFollowCamera() const { return FollowCamera; }
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
+	TObjectPtr<class UGribbitBuildingComponent> BuildingComponent;
 
 protected:
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Visuals")
 	TObjectPtr<USkeletalMeshComponent> FrogMesh;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<USpringArmComponent> SpringArm;
 
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit")
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
 	TObjectPtr<UCameraComponent> FollowCamera;
 
 	void MoveForward(float Value);
