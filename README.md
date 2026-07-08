@@ -1,62 +1,51 @@
 # Gribbits Town - Unreal Edition
 
-**Gribbits Town** è un videogioco di simulazione di vita stile The Sims con rane antropomorfe stylish, ambientato in una cittadina palustre moderna e vivace.
+**Gribbits Town** è un mondo sandbox online stile **Mini World / Roblox** abitato da rane antropomorfe stylish (i Gribbits).
 
-Il progetto è in fase iniziale su Unreal Engine 5.5 (C++).
+I giocatori possono esplorare, costruire, socializzare e vivere insieme in un mondo condiviso con altri giocatori in tempo reale.
 
-## Visione del Gioco
+## Nuova Visione del Gioco
 
-- **Genere**: Life Simulation + Social Sandbox (The Sims + Animal Crossing)
-- **Protagonisti**: Rane antropomorfe (Gribbits) con personalità forti
-- **Ambientazione**: Gribbits Town — una cittadina su ninfee con quartieri residenziali, centro commerciale, porto e zona mistica
-- **Obiettivo a lungo termine**: Esperienza multiplayer online persistente (case visitabili, eventi di paese, economia player-driven)
+- **Genere**: Sandbox Online + Life Elements (Mini World + vita dei Gribbits)
+- **Protagonisti**: I Gribbits (rane antropomorfe con personalità forti)
+- **Core Loop**: Esplora → Costruisci → Socializza → Vivi la vita del tuo Gribbit
+- **Focus**: Esperienza multiplayer online persistente
 
-## Personaggi Principali (Iconici)
+## I 7 Personaggi Iconici
 
-Abbiamo definito 7 personaggi principali basati sulle immagini generate:
+Questi sono i Gribbits più famosi del paese. Possono essere usati come:
+- Preset iniziali per il giocatore
+- NPC speciali con quest e dialoghi
+- Personaggi giocabili sbloccabili
 
-| Nome              | Ruolo                              | Tipo                  |
-|-------------------|------------------------------------|-----------------------|
-| Chill Pete        | Proprietario Pizzeria              | Preset + NPC         |
-| Sheriff Buck      | Sceriffo                           | Preset + NPC         |
-| Max MARFA         | Influencer / Ambasciatore brand    | Preset + NPC         |
-| Captain Finn      | Capitano del porto                 | Preset + NPC         |
-| Elder Moss        | Saggio del paese                   | NPC Guida            |
-| Lord Tiberius     | Tycoon losco                       | NPC con rami morali  |
-| Lana MARFA        | Modella / Ambasciatrice ufficiale  | NPC Ricorrente       |
+| Nome              | Ruolo                              | Stile Iconico          |
+|-------------------|------------------------------------|------------------------|
+| Chill Pete        | Padrone della pizzeria             | Pizza in testa         |
+| Sheriff Buck      | Sceriffo del paese                 | Cowboy                 |
+| Max MARFA         | Influencer del brand MARFA         | Streetwear             |
+| Captain Finn      | Capitano del porto                 | Marinaio               |
+| Elder Moss        | Saggio del paese                   | Mistico anziano        |
+| Lord Tiberius     | Tycoon                             | Elegante viola         |
+| Lana MARFA        | Ambasciatrice ufficiale MARFA      | Modella fashion        |
 
-Le immagini ufficiali dei personaggi sono in `References/Characters/`
+## Obiettivi Principali
 
-## Struttura Attuale del Progetto
+- Mondo persistente online
+- Sistema di costruzione (blocchi / oggetti)
+- Sistema di bisogni leggero (non pesante come The Sims)
+- Interazioni sociali e eventi di paese
+- I 7 Gribbits come personaggi speciali
 
-- `GribbitTown.uproject` — UE 5.5
-- `Source/GribbitTown/` — C++ base (GameMode che genera proceduralmente la città + Character base)
-- `References/` — Concept art e riferimenti visivi
-- `Docs/` — Documentazione di design
+## Stato del Progetto
 
-## Prossimi Passi (Roadmap)
+Il progetto è in fase iniziale su Unreal Engine 5.5.
+Attualmente ha:
+- Base C++ per Character + Needs + Interaction
+- Foundation multiplayer (replication)
+- Python script per generare parti del progetto
 
-1. **Personaggi**
-   - Importare/Modellare i 7 personaggi
-   - Creare Blueprint o C++ per Character con outfit system
-   - Sistema Create-A-Gribbit
-
-2. **Mondo**
-   - Sostituire la generazione procedurale con level design manuale + streaming
-   - Aggiungere interni delle case e negozi
-
-3. **Gameplay Core**
-   - Sistema Bisogni (Fame, Energia, Divertimento, Sociale... versione rana)
-   - Skill e Carriere
-   - Interazioni sociali
-
-4. **Multiplayer (fase successiva)**
-   - Valutare Unreal Multiplayer o plugin come Advanced Sessions
-
-## Come Contribuire
-
-Apri una issue o una pull request. Il progetto è aperto a idee!
+Vedi `Docs/Roadmap.md` per lo stato dettagliato.
 
 ---
 
-*Creato con Grok by xAI - Documentazione aggiornata Luglio 2026*
+*Progetto in collaborazione con Grok by xAI*
