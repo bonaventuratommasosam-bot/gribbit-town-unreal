@@ -8,19 +8,15 @@
 UGribbitBuildingComponent::UGribbitBuildingComponent()
 {
 	SetIsReplicated(true);
-
-	if (!DefaultPlaceableObject)
-	{
-		DefaultPlaceableObject = AStaticMeshActor::StaticClass();
-	}
 }
 
-void UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance)
+void UGribbitBuildingComponent::PlaceObjectInFront(EBuildObjectType ObjectType, float Distance)
 {
-	if (!ObjectClass) return;
-
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
 	if (!OwnerChar) return;
+
+	UWorld* World = GetWorld();
+	if (!World) return;
 
 	FVector Start = OwnerChar->GetActorLocation();
 	FVector Forward = OwnerChar->GetActorForwardVector();
@@ -29,7 +25,25 @@ void UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectCla
 	FRotator Rotation = OwnerChar->GetActorRotation();
 	FRotator FinalRotation(0.f, Rotation.Yaw, 0.f);
 
-	ServerPlaceObject(ObjectClass, Location, FinalRotation);
+	AActor* NewActor = World->SpawnActor<AActor>(AStaticMeshActor::StaticClass(), Location, FinalRotation);
+	AStaticMeshActor* MeshActor = Cast<AStaticMeshActor>(NewActor);
+	if (!MeshActor) return;
+
+	UStaticMesh* Mesh = nullptr;
+
+	switch (ObjectType)
+	{
+	case EBuildObjectType::Cube:     Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube")); break;
+	case EBuildObjectType::Cylinder: Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cylinder")); break;
+	case EBuildObjectType::Sphere:   Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Sphere")); break;
+	case EBuildObjectType::Cone:     Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cone")); break;
+	default: Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube")); break;
+	}
+
+	if (Mesh)
+	{
+		MeshActor->GetStaticMeshComponent()->SetStaticMesh(Mesh);
+	}
 }
 
 void UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
@@ -37,43 +51,15 @@ void UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
 	if (!OwnerChar) return;
 
+	UWorld* World = GetWorld();
+	if (!World) return;
+
 	FVector Start = OwnerChar->GetActorLocation();
-	FVector Forward = OwnerChar->GetActorForwardVector();
-	FVector EndLocation = Start + Forward * Distance;
-
-	ServerRemoveObject(EndLocation, Distance);
-}
-
-void UGribbitBuildingComponent::ServerPlaceObject_Implementation(TSubclassOf<AActor> ObjectClass, FVector Location, FRotator Rotation)
-{
-	if (!ObjectClass) return;
-
-	UWorld* World = GetWorld();
-	if (!World) return;
-
-	AActor* NewActor = World->SpawnActor<AActor>(ObjectClass, Location, Rotation);
-
-	if (AStaticMeshActor* MeshActor = Cast<AStaticMeshActor>(NewActor))
-	{
-		UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube"));
-		if (CubeMesh)
-		{
-			MeshActor->GetStaticMeshComponent()->SetStaticMesh(CubeMesh);
-		}
-	}
-}
-
-void UGribbitBuildingComponent::ServerRemoveObject_Implementation(FVector Location, float Distance)
-{
-	UWorld* World = GetWorld();
-	if (!World) return;
-
-	FVector Start = GetOwner()->GetActorLocation();
-	FVector End = Location;
+	FVector End = Start + OwnerChar->GetActorForwardVector() * Distance;
 
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(GetOwner());
+	Params.AddIgnoredActor(OwnerChar);
 
 	if (World->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, Params))
 	{
@@ -83,4 +69,9 @@ void UGribbitBuildingComponent::ServerRemoveObject_Implementation(FVector Locati
 			HitActor->Destroy();
 		}
 	}
+}
+
+void UGribbitBuildingComponent::SetBuildType(EBuildObjectType NewType)
+{
+	CurrentBuildType = NewType;
 }

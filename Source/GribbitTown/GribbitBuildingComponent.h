@@ -4,6 +4,15 @@
 #include "Components/ActorComponent.h"
 #include "GribbitBuildingComponent.generated.h"
 
+UENUM(BlueprintType)
+enum class EBuildObjectType : uint8
+{
+	Cube       UMETA(DisplayName = "Cube"),
+	Cylinder   UMETA(DisplayName = "Cylinder"),
+	Sphere     UMETA(DisplayName = "Sphere"),
+	Cone       UMETA(DisplayName = "Cone")
+};
+
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GRIBBITTOWN_API UGribbitBuildingComponent : public UActorComponent
 {
@@ -13,18 +22,15 @@ public:
 	UGribbitBuildingComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Building")
-	void PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance = 200.f);
+	void PlaceObjectInFront(EBuildObjectType ObjectType = EBuildObjectType::Cube, float Distance = 200.f);
 
 	UFUNCTION(BlueprintCallable, Category = "Building")
 	void RemoveObjectInFront(float Distance = 250.f);
 
+	// Change the type of object to build next
+	UFUNCTION(BlueprintCallable, Category = "Building")
+	void SetBuildType(EBuildObjectType NewType);
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
-	TSubclassOf<AActor> DefaultPlaceableObject;
-
-protected:
-	UFUNCTION(Server, Reliable)
-	void ServerPlaceObject(TSubclassOf<AActor> ObjectClass, FVector Location, FRotator Rotation);
-
-	UFUNCTION(Server, Reliable)
-	void ServerRemoveObject(FVector Location, float Distance);
+	EBuildObjectType CurrentBuildType = EBuildObjectType::Cube;
 };
