@@ -3,10 +3,10 @@
 #include "Engine/World.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/StaticMeshComponent.h"
+#include "DrawDebugHelpers.h"
 
 UGribbitBuildingComponent::UGribbitBuildingComponent()
 {
-	// Default to a simple cube if nothing is assigned
 	if (!DefaultPlaceableObject)
 	{
 		DefaultPlaceableObject = AStaticMeshActor::StaticClass();
@@ -32,7 +32,6 @@ bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectCla
 
 	AActor* NewActor = World->SpawnActor<AActor>(ObjectClass, Location, FinalRotation);
 
-	// If it's a StaticMeshActor, give it a visible cube
 	if (AStaticMeshActor* MeshActor = Cast<AStaticMeshActor>(NewActor))
 	{
 		UStaticMesh* CubeMesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube"));
@@ -43,4 +42,33 @@ bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectCla
 	}
 
 	return NewActor != nullptr;
+}
+
+bool UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
+{
+	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
+	if (!OwnerChar) return false;
+
+	UWorld* World = GetWorld();
+	if (!World) return false;
+
+	FVector Start = OwnerChar->GetActorLocation();
+	FVector End = Start + OwnerChar->GetActorForwardVector() * Distance;
+
+	FHitResult HitResult;
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(OwnerChar);
+
+	if (World->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, Params))
+	{
+		AActor* HitActor = HitResult.GetActor();
+		if (HitActor && HitActor->IsA(AStaticMeshActor::StaticClass()))
+		{
+			HitActor->Destroy();
+			return true;
+		}
+	}
+
+	DrawDebugLine(World, Start, End, FColor::Red, false, 1.0f);
+	return false;
 }
