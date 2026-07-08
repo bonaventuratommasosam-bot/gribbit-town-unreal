@@ -1,81 +1,35 @@
 #include "GribbitNeedsComponent.h"
+#include "Engine/Engine.h"
 
 UGribbitNeedsComponent::UGribbitNeedsComponent()
 {
 	PrimaryComponentTick.bCanEverTick = true;
-	SetIsReplicatedByDefault(true);
-	RebuildNeedMap();
-}
-
-void UGribbitNeedsComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
-{
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-
-	DOREPLIFETIME(UGribbitNeedsComponent, Hunger);
-	DOREPLIFETIME(UGribbitNeedsComponent, Energy);
-	DOREPLIFETIME(UGribbitNeedsComponent, Fun);
-	DOREPLIFETIME(UGribbitNeedsComponent, Social);
-	DOREPLIFETIME(UGribbitNeedsComponent, Hygiene);
-	DOREPLIFETIME(UGribbitNeedsComponent, Bladder);
 }
 
 void UGribbitNeedsComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Only the server advances needs; clients receive replicated values.
-	if (GetOwner() && GetOwner()->HasAuthority())
-	{
-		DecayNeed("Hunger",  Hunger,  HungerDecay,  DeltaTime);
-		DecayNeed("Energy",  Energy,  EnergyDecay,  DeltaTime);
-		DecayNeed("Fun",     Fun,     FunDecay,     DeltaTime);
-		DecayNeed("Social",  Social,  SocialDecay,  DeltaTime);
-		DecayNeed("Hygiene", Hygiene, HygieneDecay, DeltaTime);
-		DecayNeed("Bladder", Bladder, BladderDecay, DeltaTime);
-	}
-}
+	// Simple needs decay
+	Hunger = FMath::Clamp(Hunger - 0.8f * DeltaTime, 0.f, 100.f);
+	Energy = FMath::Clamp(Energy - 0.5f * DeltaTime, 0.f, 100.f);
+	Fun    = FMath::Clamp(Fun    - 0.6f * DeltaTime, 0.f, 100.f);
+	Social = FMath::Clamp(Social - 0.4f * DeltaTime, 0.f, 100.f);
 
-void UGribbitNeedsComponent::DecayNeed(FName NeedName, float& Need, float Rate, float DeltaTime)
-{
-	const float Previous = Need;
-	Need = FMath::Clamp(Need - Rate * DeltaTime, 0.f, 100.f);
-	if (Previous >= 20.f && Need < 20.f)
+	// Show needs on screen for testing (remove later)
+	if (GEngine)
 	{
-		OnNeedCritical.Broadcast(NeedName);
+		GEngine->AddOnScreenDebugMessage(1, 0.0f, FColor::Yellow, FString::Printf(TEXT("Hunger: %.1f"), Hunger));
+		GEngine->AddOnScreenDebugMessage(2, 0.0f, FColor::Cyan,   FString::Printf(TEXT("Energy: %.1f"), Energy));
+		GEngine->AddOnScreenDebugMessage(3, 0.0f, FColor::Green,  FString::Printf(TEXT("Fun: %.1f"), Fun));
+		GEngine->AddOnScreenDebugMessage(4, 0.0f, FColor::Magenta, FString::Printf(TEXT("Social: %.1f"), Social));
 	}
 }
 
 void UGribbitNeedsComponent::ModifyNeed(FName NeedName, float Amount)
 {
-	float** Value = NeedMap.Find(NeedName);
-	if (!Value || !*Value) return;
-	**Value = FMath::Clamp(**Value + Amount, 0.f, 100.f);
-}
-
-float UGribbitNeedsComponent::GetNeed(FName NeedName) const
-{
-	float* const* Value = NeedMap.Find(NeedName);
-	return (Value && *Value) ? **Value : 0.f;
-}
-
-float UGribbitNeedsComponent::GetAverageNeed() const
-{
-	float Sum = Hunger + Energy + Fun + Social + Hygiene + Bladder;
-	return Sum / 6.f;
-}
-
-bool UGribbitNeedsComponent::IsCritical(FName NeedName, float Threshold) const
-{
-	return GetNeed(NeedName) < Threshold;
-}
-
-void UGribbitNeedsComponent::RebuildNeedMap()
-{
-	NeedMap.Empty();
-	NeedMap.Add("Hunger",  &Hunger);
-	NeedMap.Add("Energy",  &Energy);
-	NeedMap.Add("Fun",     &Fun);
-	NeedMap.Add("Social",  &Social);
-	NeedMap.Add("Hygiene", &Hygiene);
-	NeedMap.Add("Bladder", &Bladder);
+	if (NeedName == "Hunger") Hunger = FMath::Clamp(Hunger + Amount, 0.f, 100.f);
+	else if (NeedName == "Energy") Energy = FMath::Clamp(Energy + Amount, 0.f, 100.f);
+	else if (NeedName == "Fun")    Fun    = FMath::Clamp(Fun    + Amount, 0.f, 100.f);
+	else if (NeedName == "Social") Social = FMath::Clamp(Social + Amount, 0.f, 100.f);
 }
