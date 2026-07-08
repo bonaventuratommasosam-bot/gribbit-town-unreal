@@ -1,51 +1,33 @@
 # Gribbits Town - Unreal Edition
 
-**Gribbits Town** è un mondo sandbox online stile **Mini World / Roblox** abitato da rane antropomorfe stylish (i Gribbits).
+**Gribbits Town** è un mondo sandbox online stile **Mini World**, popolato da rane antropomorfe (Gribbits).
 
-I giocatori possono esplorare, costruire, socializzare e vivere insieme in un mondo condiviso con altri giocatori in tempo reale.
+## Obiettivo Attuale
+Rendere il gioco **giocabile il prima possibile** in modalità online.
 
-## Nuova Visione del Gioco
+### Stato Attuale (Luglio 2026)
+- Movimento base con telecamera follow
+- Sistema Bisogni (Needs)
+- Sistema Interazione
+- **Sistema di Costruzione base** (premi **B** per piazzare un oggetto)
+- Foundation Multiplayer
+- I 7 Gribbits iconici definiti
 
-- **Genere**: Sandbox Online + Life Elements (Mini World + vita dei Gribbits)
-- **Protagonisti**: I Gribbits (rane antropomorfe con personalità forti)
-- **Core Loop**: Esplora → Costruisci → Socializza → Vivi la vita del tuo Gribbit
-- **Focus**: Esperienza multiplayer online persistente
+## Come Giocare Subito
 
-## I 7 Personaggi Iconici
+1. Apri il progetto con Unreal Engine 5.5
+2. Compila il modulo C++
+3. Apri la mappa `GribbitTown_Main`
+4. Premi **Play**
+5. Muoviti con **WASD**
+6. Premi **B** per provare a piazzare un oggetto (devi assegnare un oggetto in `DefaultPlaceableObject` nel BuildingComponent)
 
-Questi sono i Gribbits più famosi del paese. Possono essere usati come:
-- Preset iniziali per il giocatore
-- NPC speciali con quest e dialoghi
-- Personaggi giocabili sbloccabili
+Per giocare online:
+- Avvia come **Listen Server**
+- Fai joinare un altro client
 
-| Nome              | Ruolo                              | Stile Iconico          |
-|-------------------|------------------------------------|------------------------|
-| Chill Pete        | Padrone della pizzeria             | Pizza in testa         |
-| Sheriff Buck      | Sceriffo del paese                 | Cowboy                 |
-| Max MARFA         | Influencer del brand MARFA         | Streetwear             |
-| Captain Finn      | Capitano del porto                 | Marinaio               |
-| Elder Moss        | Saggio del paese                   | Mistico anziano        |
-| Lord Tiberius     | Tycoon                             | Elegante viola         |
-| Lana MARFA        | Ambasciatrice ufficiale MARFA      | Modella fashion        |
-
-## Obiettivi Principali
-
-- Mondo persistente online
-- Sistema di costruzione (blocchi / oggetti)
-- Sistema di bisogni leggero (non pesante come The Sims)
-- Interazioni sociali e eventi di paese
-- I 7 Gribbits come personaggi speciali
-
-## Stato del Progetto
-
-Il progetto è in fase iniziale su Unreal Engine 5.5.
-Attualmente ha:
-- Base C++ per Character + Needs + Interaction
-- Foundation multiplayer (replication)
-- Python script per generare parti del progetto
-
-Vedi `Docs/Roadmap.md` per lo stato dettagliato.
+Vedi `Docs/HowToPlay.md` per istruzioni dettagliate.
 
 ---
 
-*Progetto in collaborazione con Grok by xAI*
+*Progetto orientato a diventare giocabile velocemente*
