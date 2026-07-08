@@ -11,20 +11,18 @@ class UGribbitOutfitComponent;
 class UGribbitInteractionComponent;
 class UGribbitBuildingComponent;
 
-/**
- * AGribbitCharacter
- * 
- * Personaggio principale giocabile (Gribbit).
- * 
- * Include:
- * - Movimento
- * - Sistema Bisogni (Needs)
- * - Sistema Outfit
- * - Sistema Interazione
- * - Sistema Costruzione (Building) - stile Mini World
- * 
- * I 7 personaggi iconici saranno versioni specializzate di questa classe.
- */
+USTRUCT(BlueprintType)
+struct FGribbitCharacterData
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FText DisplayName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FName DefaultOutfit = "Default";
+};
+
 UCLASS()
 class GRIBBITTOWN_API AGribbitCharacter : public ACharacter
 {
@@ -35,18 +33,21 @@ public:
 
 	virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
 
-	// === Core Systems ===
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<class UGribbitNeedsComponent> NeedsComponent;
+	// Apply data from a character preset (for the 7 iconic Gribbits)
+	UFUNCTION(BlueprintCallable, Category = "Gribbit")
+	void ApplyCharacterData(const FGribbitCharacterData& Data);
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<class UGribbitOutfitComponent> OutfitComponent;
+	TObjectPtr<UGribbitNeedsComponent> NeedsComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<class UGribbitInteractionComponent> InteractionComponent;
+	TObjectPtr<UGribbitOutfitComponent> OutfitComponent;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
-	TObjectPtr<class UGribbitBuildingComponent> BuildingComponent;
+	TObjectPtr<UGribbitInteractionComponent> InteractionComponent;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Gribbit Systems")
+	TObjectPtr<UGribbitBuildingComponent> BuildingComponent;
 
 protected:
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Visuals")
@@ -60,4 +61,8 @@ protected:
 
 	void MoveForward(float Value);
 	void MoveRight(float Value);
+
+	void TryBuild();
+	void TryRemove();
+	void TryInteract();
 };
