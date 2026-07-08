@@ -1,10 +1,13 @@
 # Gribbits Town - Godot Web Version
 
-## Come Testare Localmente
+## Stato Attuale
 
-1. Apri la cartella `godot/` con Godot 4.3+
-2. Apri la scena `MainWorld.tscn`
-3. Premi Play
+- [x] Movimento in prima persona con mouse
+- [x] Sistema di costruzione con preview e grid snap
+- [x] Piazza blocchi (Click Sinistro)
+- [x] Rimuovi blocchi (Click Destro)
+- [x] Sistema Bisogni base con UI
+- [x] Costruire consuma energia
 
 ## Controlli
 - **WASD** → Muoviti
@@ -13,10 +16,13 @@
 - **Click Sinistro** → Piazza blocco
 - **Click Destro** → Rimuovi blocco
 
-## Prossimi Passi
-- Aggiungere UI
-- Sistema bisogni
-- I 7 Gribbits
-- Esportazione HTML5
+## Come Provare
+
+1. Apri la cartella `godot` con Godot 4.3+
+2. Apri `MainWorld.tscn`
+3. Premi Play
+
+## Prossimo Obiettivo
+Esportazione HTML5 per metterlo sul web
 
 *Versione pensata per essere giocata direttamente dal browser*
