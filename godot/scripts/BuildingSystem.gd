@@ -5,6 +5,7 @@ extends Node3D
 
 var preview_mesh : MeshInstance3D
 var needs_system : Node
+var current_block_color = Color(0.8, 0.6, 0.4)  # Default wood-like color
 
 func _ready():
 	preview_mesh = get_node("../BuildPreview")
@@ -17,6 +18,12 @@ func _process(delta):
 		try_place_block()
 	if Input.is_action_just_pressed("remove"):
 		try_remove_block()
+
+	# Change block color with number keys
+	if Input.is_action_just_pressed("ui_1"): current_block_color = Color(0.8, 0.6, 0.4)
+	if Input.is_action_just_pressed("ui_2"): current_block_color = Color(0.6, 0.8, 0.6)
+	if Input.is_action_just_pressed("ui_3"): current_block_color = Color(0.6, 0.7, 0.9)
+	if Input.is_action_just_pressed("ui_4"): current_block_color = Color(0.9, 0.7, 0.5)
 
 func update_build_preview():
 	var player = get_parent().get_node("GribbitPlayer")
@@ -49,9 +56,14 @@ func try_place_block():
 		new_block.mesh = BoxMesh.new()
 		new_block.scale = Vector3(0.95, 0.95, 0.95)
 		new_block.global_position = preview_mesh.global_position
+		
+		# Apply color
+		var material = StandardMaterial3D.new()
+		material.albedo_color = current_block_color
+		new_block.material_override = material
+		
 		add_child(new_block)
 
-		# Costruire consuma un po' di energia
 		needs_system.modify_need("energy", -5)
 
 func try_remove_block():
