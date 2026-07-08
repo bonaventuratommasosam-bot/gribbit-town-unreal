@@ -4,12 +4,6 @@
 #include "Components/ActorComponent.h"
 #include "GribbitBuildingComponent.generated.h"
 
-/**
- * UGribbitBuildingComponent
- * 
- * Sistema di costruzione base per Gribbits Town (stile Mini World).
- * Supporta piazzamento e rimozione oggetti.
- */
 UCLASS(ClassGroup=(Custom), meta=(BlueprintSpawnableComponent))
 class GRIBBITTOWN_API UGribbitBuildingComponent : public UActorComponent
 {
@@ -19,11 +13,18 @@ public:
 	UGribbitBuildingComponent();
 
 	UFUNCTION(BlueprintCallable, Category = "Building")
-	bool PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance = 200.f);
+	void PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance = 200.f);
 
 	UFUNCTION(BlueprintCallable, Category = "Building")
-	bool RemoveObjectInFront(float Distance = 250.f);
+	void RemoveObjectInFront(float Distance = 250.f);
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Building")
 	TSubclassOf<AActor> DefaultPlaceableObject;
+
+protected:
+	UFUNCTION(Server, Reliable)
+	void ServerPlaceObject(TSubclassOf<AActor> ObjectClass, FVector Location, FRotator Rotation);
+
+	UFUNCTION(Server, Reliable)
+	void ServerRemoveObject(FVector Location, float Distance);
 };

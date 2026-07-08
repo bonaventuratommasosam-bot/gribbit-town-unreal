@@ -3,7 +3,6 @@
 #include "Engine/World.h"
 #include "Engine/StaticMeshActor.h"
 #include "Components/StaticMeshComponent.h"
-#include "Net/UnrealNetwork.h"
 #include "DrawDebugHelpers.h"
 
 UGribbitBuildingComponent::UGribbitBuildingComponent()
@@ -16,20 +15,12 @@ UGribbitBuildingComponent::UGribbitBuildingComponent()
 	}
 }
 
-void UGribbitBuildingComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
+void UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance)
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-}
-
-bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectClass, float Distance)
-{
-	if (!ObjectClass) return false;
+	if (!ObjectClass) return;
 
 	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
-	if (!OwnerChar) return false;
-
-	UWorld* World = GetWorld();
-	if (!World) return false;
+	if (!OwnerChar) return;
 
 	FVector Start = OwnerChar->GetActorLocation();
 	FVector Forward = OwnerChar->GetActorForwardVector();
@@ -38,7 +29,29 @@ bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectCla
 	FRotator Rotation = OwnerChar->GetActorRotation();
 	FRotator FinalRotation(0.f, Rotation.Yaw, 0.f);
 
-	AActor* NewActor = World->SpawnActor<AActor>(ObjectClass, Location, FinalRotation);
+	ServerPlaceObject(ObjectClass, Location, FinalRotation);
+}
+
+void UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
+{
+	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
+	if (!OwnerChar) return;
+
+	FVector Start = OwnerChar->GetActorLocation();
+	FVector Forward = OwnerChar->GetActorForwardVector();
+	FVector EndLocation = Start + Forward * Distance;
+
+	ServerRemoveObject(EndLocation, Distance);
+}
+
+void UGribbitBuildingComponent::ServerPlaceObject_Implementation(TSubclassOf<AActor> ObjectClass, FVector Location, FRotator Rotation)
+{
+	if (!ObjectClass) return;
+
+	UWorld* World = GetWorld();
+	if (!World) return;
+
+	AActor* NewActor = World->SpawnActor<AActor>(ObjectClass, Location, Rotation);
 
 	if (AStaticMeshActor* MeshActor = Cast<AStaticMeshActor>(NewActor))
 	{
@@ -48,24 +61,19 @@ bool UGribbitBuildingComponent::PlaceObjectInFront(TSubclassOf<AActor> ObjectCla
 			MeshActor->GetStaticMeshComponent()->SetStaticMesh(CubeMesh);
 		}
 	}
-
-	return NewActor != nullptr;
 }
 
-bool UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
+void UGribbitBuildingComponent::ServerRemoveObject_Implementation(FVector Location, float Distance)
 {
-	ACharacter* OwnerChar = Cast<ACharacter>(GetOwner());
-	if (!OwnerChar) return false;
-
 	UWorld* World = GetWorld();
-	if (!World) return false;
+	if (!World) return;
 
-	FVector Start = OwnerChar->GetActorLocation();
-	FVector End = Start + OwnerChar->GetActorForwardVector() * Distance;
+	FVector Start = GetOwner()->GetActorLocation();
+	FVector End = Location;
 
 	FHitResult HitResult;
 	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(OwnerChar);
+	Params.AddIgnoredActor(GetOwner());
 
 	if (World->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, Params))
 	{
@@ -73,10 +81,6 @@ bool UGribbitBuildingComponent::RemoveObjectInFront(float Distance)
 		if (HitActor && HitActor->IsA(AStaticMeshActor::StaticClass()))
 		{
 			HitActor->Destroy();
-			return true;
 		}
 	}
-
-	DrawDebugLine(World, Start, End, FColor::Red, false, 1.0f);
-	return false;
 }
