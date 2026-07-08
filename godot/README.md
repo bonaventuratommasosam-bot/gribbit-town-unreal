@@ -16,6 +16,10 @@ Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser**.
 - [x] Interazione (E) che ripristina la fame
 - [x] Mondo con alberi
 
+## I 7 Gribbits Iconici
+
+Vedi il file `CHARACTERS.md` per i dettagli completi sui 7 personaggi principali.
+
 ## Controlli
 - **WASD** → Muoviti
 - **Mouse** → Guarda intorno
@@ -31,17 +35,12 @@ Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser**.
 2. Apri `MainMenu.tscn` o `MainWorld.tscn`
 3. Premi Play
 
-## Compressione Texture per Web
+## Ottimizzazione per Web
 
-Vedi il file `TEXTURE_COMPRESSION.md` per una guida completa su come comprimere le texture in modo ottimale per l'esportazione HTML5.
-
-## Ottimizzazione Asset 3D per Web
-
-Vedi il file `3D_ASSET_OPTIMIZATION.md` per ottimizzare mesh, texture e materiali.
-
-## Debug Performance nel Browser
-
-Vedi il file `DEBUG_PERFORMANCE.md` per monitorare le performance su web.
+- `WEB_OPTIMIZATION.md` → Ottimizzazione generale HTML5
+- `DEBUG_PERFORMANCE.md` → Debug performance nel browser
+- `3D_ASSET_OPTIMIZATION.md` → Ottimizzazione asset 3D
+- `TEXTURE_COMPRESSION.md` → Compressione texture per web
 
 ## Come Esportare in HTML5
 
