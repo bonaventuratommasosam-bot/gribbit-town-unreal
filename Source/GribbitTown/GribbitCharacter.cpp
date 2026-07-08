@@ -45,8 +45,8 @@ void AGribbitCharacter::SetupPlayerInputComponent(UInputComponent* PlayerInputCo
 	PlayerInputComponent->BindAxis("MoveForward", this, &AGribbitCharacter::MoveForward);
 	PlayerInputComponent->BindAxis("MoveRight", this, &AGribbitCharacter::MoveRight);
 
-	// Building input (tasto B per piazzare)
 	PlayerInputComponent->BindAction("Build", IE_Pressed, this, &AGribbitCharacter::TryBuild);
+	PlayerInputComponent->BindAction("Interact", IE_Pressed, this, &AGribbitCharacter::TryInteract);
 }
 
 void AGribbitCharacter::MoveForward(float Value)
@@ -69,8 +69,16 @@ void AGribbitCharacter::MoveRight(float Value)
 
 void AGribbitCharacter::TryBuild()
 {
-	if (BuildingComponent && BuildingComponent->DefaultPlaceableObject)
+	if (BuildingComponent)
 	{
 		BuildingComponent->PlaceObjectInFront(BuildingComponent->DefaultPlaceableObject);
+	}
+}
+
+void AGribbitCharacter::TryInteract()
+{
+	if (InteractionComponent)
+	{
+		InteractionComponent->TryInteract();
 	}
 }
