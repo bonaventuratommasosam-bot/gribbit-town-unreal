@@ -1,71 +1,40 @@
 #include "GribbitTownGameMode.h"
 #include "GribbitCharacter.h"
-#include "GribbitPlayerController.h"
-#include "GribbitPlayerState.h"
-#include "GribbitCharacterData.h"
-#include "Engine/DataTable.h"
-#include "Kismet/GameplayStatics.h"
 #include "Engine/World.h"
-#include "UObject/ConstructorHelpers.h"
+#include "Engine/StaticMeshActor.h"
+#include "Components/StaticMeshComponent.h"
 
 AGribbitTownGameMode::AGribbitTownGameMode()
 {
-	static ConstructorHelpers::FClassFinder<AGribbitCharacter> ChillPeteBP(TEXT("/Game/Characters/BP_ChillPete"));
-	if (ChillPeteBP.Succeeded())
-	{
-		DefaultFrogClass = ChillPeteBP.Class;
-	}
-
-	// Multiplayer-ready default classes (Feature 5).
-	DefaultPawnClass = DefaultFrogClass ? DefaultFrogClass.Get() : AGribbitCharacter::StaticClass();
-	PlayerControllerClass = AGribbitPlayerController::StaticClass();
-	PlayerStateClass = AGribbitPlayerState::StaticClass();
-
-	// The chosen frog (BP_ChillPete after the Python setup) is the default pawn.
-	if (!DefaultFrogClass)
-	{
-		DefaultFrogClass = AGribbitCharacter::StaticClass();
-	}
+	DefaultPawnClass = AGribbitCharacter::StaticClass();
 }
 
-void AGribbitTownGameMode::BeginPlay()
+void AGribbitTownGameMode::StartPlay()
 {
-	Super::BeginPlay();
+	Super::StartPlay();
 
-	// Feature 3: load the hand-authored level instead of generating procedurally.
 	UWorld* World = GetWorld();
-	if (World && !DefaultMap.IsEmpty() && !World->GetMapName().Contains(TEXT("GribbitTown_Main")))
+	if (!World) return;
+
+	// Basic lighting
+	if (ADirectionalLight* Sun = World->SpawnActor<ADirectionalLight>(ADirectionalLight::StaticClass(), FVector(0,0,600), FRotator(-45,0,0)))
 	{
-		UGameplayStatics::OpenLevel(World, FName(*DefaultMap));
-		return;
+		Sun->GetLightComponent()->SetIntensity(3.f);
 	}
 
-	SpawnTownfolk();
-}
-
-void AGribbitTownGameMode::SpawnTownfolk()
-{
-	UWorld* World = GetWorld();
-	if (!World || !DefaultFrogClass) return;
-
-	// Load the character table and spawn one frog per row.
-	UDataTable* Table = LoadObject<UDataTable>(nullptr, TEXT("/Game/Data/DT_Characters.DT_Characters"));
-	if (!Table) return;
-
-	TArray<FGribbitCharacterRow*> Rows;
-	Table->GetAllRows<FGribbitCharacterRow>(TEXT("SpawnTownfolk"), Rows);
-
-	const int32 Count = FMath::Min(TownfolkCount, Rows.Num());
-	for (int32 i = 0; i < Count; ++i)
+	if (ASkyLight* Sky = World->SpawnActor<ASkyLight>(ASkyLight::StaticClass(), FVector(0,0,600), FRotator::ZeroRotator))
 	{
-		const FName RowName = Table->GetRowNames()[i];
-		const FVector Loc(200.f * (i % 3), 200.f * (i / 3), 100.f);
-		FActorSpawnParameters Params;
-		Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+		Sky->GetLightComponent()->SetIntensity(1.f);
+	}
 
-		if (AGribbitCharacter* Frog = World->SpawnActor<AGribbitCharacter>(DefaultFrogClass, Loc, FRotator::ZeroRotator, Params))
+	// Spawn a few initial objects so the world isn't empty
+	FVector StartLoc = FVector(200, 0, 50);
+	for (int i = 0; i < 5; i++)
+	{
+		if (AStaticMeshActor* Cube = World->SpawnActor<AStaticMeshActor>(AStaticMeshActor::StaticClass(), StartLoc + FVector(i * 150, 0, 0), FRotator::ZeroRotator))
 		{
-			Frog->ApplyPreset(RowName);
+			UStaticMesh* Mesh = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube"));
+			if (Mesh) Cube->GetStaticMeshComponent()->SetStaticMesh(Mesh);
 		}
 	}
 }
