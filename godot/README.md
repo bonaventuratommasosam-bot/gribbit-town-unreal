@@ -1,7 +1,7 @@
 # Gribbits Town - Godot Web Edition
 
 ## Obiettivo
-Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser** dal tuo sito.
+Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser**.
 
 ## Stato Attuale
 
@@ -25,39 +25,22 @@ Sandbox con rane antropomorfe (Gribbits) **giocabile direttamente nel browser** 
 - **1 / 2 / 3 / 4** → Cambia colore del blocco
 - **E** → Interagisci
 
-## Come Provare Localmente
+## Come Provare
 
 1. Apri la cartella `godot` con Godot 4.3+
 2. Apri `MainMenu.tscn` o `MainWorld.tscn`
 3. Premi Play
 
-## Ottimizzazione per HTML5 / Web Export
+## Ottimizzazione HTML5 / WebGL
 
-### Passi per Esportare in HTML5
+Vedi il file `WEB_OPTIMIZATION.md` per una guida dettagliata.
 
-1. Apri il progetto in Godot 4.3+
-2. Vai su **Project → Export**
-3. Clicca **Add...** e scegli **Web**
-4. Nella preset **Web** configura:
-   - **Export Path**: `export/web/index.html`
-   - **Threads**: Abilita se possibile (migliora performance)
-   - **Extensions Support**: Lascia di default
-   - **Progressive Web App (PWA)**: Opzionale
-5. Clicca **Export Project**
-6. Carica la cartella `export/web/` sul tuo hosting web
+## Come Esportare in HTML5
 
-### Consigli per Ottimizzare le Performance su Web
-
-- Mantieni le scene leggere (evita troppi nodi complessi)
-- Usa mesh semplici (attualmente usiamo primitive)
-- Limita il numero di luci attive
-- Evita shader complessi
-- Testa spesso l'esportazione durante lo sviluppo
-- Per scene grandi, considera Level of Detail (LOD) o streaming
-
-### Limitazioni HTML5
-- Performance inferiori rispetto a desktop
-- Alcuni input (es. gamepad) possono variare
-- File size deve rimanere ragionevole
+1. Project → Export
+2. Aggiungi preset **Web**
+3. Configura Threads e Compression
+4. Export Project
+5. Carica i file sul tuo sito
 
 *Versione pensata per essere giocata direttamente dal browser*
