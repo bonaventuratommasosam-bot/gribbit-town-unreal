@@ -1,33 +1,44 @@
 # Gribbits Town - Unreal Edition
 
-**Gribbits Town** è un mondo sandbox online stile **Mini World**, popolato da rane antropomorfe (Gribbits).
+**Gribbits Town** è un mondo sandbox online con rane antropomorfe (Gribbits).
 
-## Obiettivo Attuale
-Rendere il gioco **giocabile il prima possibile** in modalità online.
+## Link del Progetto
+https://github.com/bonaventuratommasosam-bot/gribbit-town-unreal
 
-### Stato Attuale (Luglio 2026)
-- Movimento base con telecamera follow
-- Sistema Bisogni (Needs)
-- Sistema Interazione
-- **Sistema di Costruzione base** (premi **B** per piazzare un oggetto)
-- Foundation Multiplayer
-- I 7 Gribbits iconici definiti
+## Come Giocare Subito (Quick Start)
 
-## Come Giocare Subito
+### Requisiti
+- Unreal Engine 5.5 installato
+- Visual Studio 2022 con Windows SDK
 
-1. Apri il progetto con Unreal Engine 5.5
-2. Compila il modulo C++
-3. Apri la mappa `GribbitTown_Main`
-4. Premi **Play**
-5. Muoviti con **WASD**
-6. Premi **B** per provare a piazzare un oggetto (devi assegnare un oggetto in `DefaultPlaceableObject` nel BuildingComponent)
+### Passi per Giocare
 
-Per giocare online:
+1. **Clona il repo**
+   ```
+   git clone https://github.com/bonaventuratommasosam-bot/gribbit-town-unreal.git
+   ```
+
+2. **Apri il progetto**
+   Apri `GribbitTown.uproject` con Unreal Engine 5.5
+
+3. **Compila il C++**
+   - Vai su **Tools → Refresh Visual Studio Project**
+   - Compila il modulo `GribbitTown` (Development Editor)
+
+4. **Avvia il gioco**
+   - Apri la mappa `Content/Maps/GribbitTown_Main.umap`
+   - Premi **Play**
+
+### Controlli
+- **WASD** → Muoviti
+- **B** → Piazza un cubo
+- **R** → Rimuovi oggetto
+- **E** → Interagisci
+
+### Per Giocare Online
 - Avvia come **Listen Server**
-- Fai joinare un altro client
-
-Vedi `Docs/HowToPlay.md` per istruzioni dettagliate.
+- Un altro giocatore può unirsi con il tuo IP
 
 ---
 
-*Progetto orientato a diventare giocabile velocemente*
+*Progetto in sviluppo attivo - mira a essere giocabile il prima possibile*
