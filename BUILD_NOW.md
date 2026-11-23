@@ -5,7 +5,15 @@
 From `C:\Program Files\Epic Games\UE_5.5\Engine\Build\BatchFiles`:
 
 ```
-Build.bat GribbitTownEditor Win64 Development -Project="C:\Users\pc\Unreal Projects\GribbitTown\GribbitTown.uproject"
+Build.bat GribbitTownEditor Win64 Development -Project="D:\GribbitTown\GribbitTown.uproject"
+```
+
+On this machine (8 GB of RAM) the Unreal Build Accelerator stalls on
+"memory pressure" and never spawns a compiler. Add `-NoUBA -MaxParallelActions=1`
+and it builds in about three minutes:
+
+```
+Build.bat GribbitTownEditor Win64 Development -Project="D:\GribbitTown\GribbitTown.uproject" -NoUBA -MaxParallelActions=1
 ```
 
 Or open `GribbitTown.uproject` in the editor (it will prompt to build).
@@ -18,6 +26,12 @@ Open the editor, then `Outputs > Python > Execute File`:
    and `/Game/Data/DT_Characters`.
 2. `Content/Python/setup_needs_widget.py` -> creates `/Game/UI/WBP_NeedsBars`.
 3. `Content/Python/build_level.py`       -> creates `/Game/Maps/GribbitTown_Main`.
+4. `Content/Python/import_kenney.py`     -> imports the Kenney models from `Art/`.
+5. `Content/Python/setup_vehicles.py`    -> creates `/Game/Vehicles/BP_Car_*`
+   (the drivable car Blueprints) and sets the map's GameMode override.
+   It also tries to park cars in the map; that part crashes the *headless*
+   editor on this machine, which is harmless -- the GameMode places the
+   drivable cars itself at BeginPlay, so you can skip it.
 
 ## 3. Wire up the classes
 
@@ -41,6 +55,11 @@ Open the editor, then `Outputs > Python > Execute File`:
   ticks down. Walk up to the **PizzaOven** (near Pizzeria) or **Bench_Rest**
   (town center) and look at it — an interaction prompt appears; press the Interact
   key to restore needs (Hunger from the oven, Energy/Fun/Social from the bench).
+- **Cars**: the five parked cars nearest the player start are swapped for
+  drivable ones when play begins (`AGribbitTownGameMode::SpawnDrivableCars`,
+  logged as "Gribbit: N parked cars are now drivable"). Walk up to one and
+  press **F** to get in, **WASD** to drive, **E** to get out. The boarding
+  range is `AGribbitPlayerController.VehicleBoardingRange` (400 cm).
 - **Multiplayer**: from the editor, `Play > Number of Players = 2` (or "Run as
   Listen Server"). Each client gets its own `AGribbitPlayerState` + HUD.
 

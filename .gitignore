@@ -19,3 +19,7 @@ __pycache__/
 *.uasset
 *.umap
 Content/Python/*.pyc
+
+# One-off editor-script markers and diagnostics
+*.marker
+diag_report.txt

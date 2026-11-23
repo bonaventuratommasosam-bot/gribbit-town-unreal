@@ -6,6 +6,7 @@
 
 class UGribbitNeedsWidget;
 class AGribbitCharacter;
+class AGribbitVehicle;
 
 /**
  * AGribbitPlayerController
@@ -37,4 +38,15 @@ public:
 	void CreateNeedsHUD();
 
 	void HandleInteractInput();
+
+	/**
+	 * Gets the frog into the nearest car. Cars are pawns, not
+	 * AGribbitInteractable actors, so they sit outside the look-at interaction
+	 * system: this is a straight proximity check on its own key.
+	 */
+	void HandleEnterVehicleInput();
+
+	/** How far from the frog a car can be and still be boardable, in cm. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Gribbit|Vehicle")
+	float VehicleBoardingRange = 400.f;
 };
